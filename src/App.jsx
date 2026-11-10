@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { delicacies } from './products.js';
+import AboutPage from './AboutPage';
 
 const REGION_GROUPS = [
   {
@@ -214,7 +215,7 @@ const formatPeso = (amount, decimals = 0) =>
 function Modal({ title, icon, onClose, children, size = 'max-w-xl' }) {
   return (
     <div
-      className="fixed inset-0 z-[70] flex items-center justify-center overflow-y-auto bg-slate-950/70 p-3 backdrop-blur-sm sm:p-5"
+      className="fixed inset-0 z-[70] flex items-center justify-center overflow-y-auto bg-black/40 p-3 sm:p-5"
       onMouseDown={(event) => {
         if (event.target === event.currentTarget) onClose();
       }}
@@ -223,20 +224,15 @@ function Modal({ title, icon, onClose, children, size = 'max-w-xl' }) {
         role="dialog"
         aria-modal="true"
         aria-label={title}
-        className={`my-auto flex max-h-[92vh] w-full ${size} flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl`}
+        className={`my-auto flex max-h-[92vh] w-full ${size} flex-col overflow-hidden rounded-xl border border-gray-200 bg-white shadow-lg`}
       >
-        <header className="flex items-center justify-between border-b border-slate-100 px-5 py-4">
-          <div className="flex items-center gap-3">
-            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-amber-100 text-amber-700">
-              <i className={`fa-solid ${icon}`} aria-hidden="true"></i>
-            </span>
-            <div>
-              <h2 className="font-bold text-slate-900">{title}</h2>
-              <p className="text-[11px] text-slate-500">E-Baligya · Philippine MSME Pasalubong Hub</p>
-            </div>
+        <header className="flex items-center justify-between border-b border-gray-100 px-5 py-4">
+          <div className="flex items-center gap-2">
+            <i className={`fa-solid ${icon} text-gray-400`} aria-hidden="true"></i>
+            <h2 className="text-sm font-semibold text-gray-900">{title}</h2>
           </div>
-          <button type="button" onClick={onClose} aria-label="Close dialog" className="rounded-lg p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-700">
-            <i className="fa-solid fa-xmark text-lg" aria-hidden="true"></i>
+          <button type="button" onClick={onClose} aria-label="Close dialog" className="rounded-md p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-700">
+            <i className="fa-solid fa-xmark" aria-hidden="true"></i>
           </button>
         </header>
         <div className="overflow-y-auto p-5">{children}</div>
@@ -246,6 +242,7 @@ function Modal({ title, icon, onClose, children, size = 'max-w-xl' }) {
 }
 
 function App() {
+  const [view, setView] = useState('shop');
   const [query, setQuery] = useState('');
   const [region, setRegion] = useState('ALL');
   const [island, setIsland] = useState('ALL');
@@ -417,17 +414,20 @@ function App() {
     setIsland('ALL');
     setSortBy('featured');
     setRegionMenuOpen(false);
+    setView('shop');
   };
 
   const chooseRegion = (nextRegion) => {
     setRegion(nextRegion);
     setIsland('ALL');
     setRegionMenuOpen(false);
+    setView('shop');
   };
 
   const chooseIsland = (nextIsland) => {
     setIsland(nextIsland);
     setRegion('ALL');
+    setView('shop');
   };
 
   const addToCart = (product) => {
@@ -769,78 +769,64 @@ function App() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col bg-[#f8fafc] font-sans text-slate-800 antialiased">
-      <div className="border-b border-slate-800 bg-brand-navy px-4 py-2 text-xs text-amber-200">
-        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-2">
-          <div className="flex items-center gap-3">
-            <span className="inline-flex items-center gap-1.5 rounded border border-amber-500/30 bg-amber-500/20 px-2 py-0.5 text-[10px] font-bold text-brand-gold">
-              <i className="fa-solid fa-shield-halved" aria-hidden="true"></i> MSME ESCROW SECURED
-            </span>
-            <span className="hidden text-slate-300 sm:inline">Direct from origin makers across 17 Philippine regions. Certified authentic pasalubong packages.</span>
-          </div>
-        </div>
-      </div>
+    <div className="flex min-h-screen flex-col bg-gray-50 font-sans text-gray-900 antialiased">
 
-      <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/95 shadow-sm backdrop-blur-md">
-        <div className="mx-auto flex h-20 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
-          <button type="button" onClick={resetFilters} className="flex shrink-0 items-center gap-3 text-left">
-            <span className="flex h-14 w-14 items-center justify-center overflow-hidden rounded-full shadow-md ring-2 ring-amber-300/60">
-              <img src="/logo.png" alt="E-Baligya logo" className="h-full w-full object-cover" />
-            </span>
+      <header className="sticky top-0 z-40 border-b border-gray-200 bg-white">
+        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+          <button type="button" onClick={resetFilters} className="flex shrink-0 items-center gap-2.5 text-left">
             <span>
-              <span className="flex items-center gap-2">
-                <span className="font-serif text-2xl font-black tracking-tight text-brand-navy">E-Baligya</span>
-                <span className="rounded border border-amber-300 bg-brand-amberLight px-1.5 py-0.5 text-[10px] font-extrabold uppercase text-amber-900">PH Hub</span>
-              </span>
-              <span className="hidden text-[11px] font-medium tracking-wide text-slate-500 sm:block">Philippine Regional Pasalubong &amp; Delicacy Logistics</span>
+              <span className="block font-serif text-xl font-bold tracking-tight text-gray-900">E-Baligya</span>
+              <span className="hidden text-2xs font-medium text-gray-400 sm:block">Philippine Pasalubong Marketplace</span>
             </span>
           </button>
 
-          <div className="relative hidden max-w-lg flex-1 md:block">
-            <i className="fa-solid fa-magnifying-glass pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400" aria-hidden="true"></i>
+          <div className="relative hidden max-w-md flex-1 md:block">
+            <i className="fa-solid fa-magnifying-glass pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400 text-sm" aria-hidden="true"></i>
             <input
               type="search"
               value={query}
-              onChange={(event) => setQuery(event.target.value)}
-              placeholder="Search delicacies, makers, or regions..."
+              onChange={(event) => {
+                setQuery(event.target.value);
+                if (view !== 'shop') setView('shop');
+              }}
+              placeholder="Search delicacies, makers, regions..."
               aria-label="Search delicacies"
-              className="w-full rounded-xl border border-slate-200 bg-slate-100/90 py-2.5 pl-10 pr-10 text-sm transition focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-gold"
+              className="w-full rounded-md border border-gray-200 bg-gray-50 py-2 pl-9 pr-9 text-sm text-gray-900 placeholder:text-gray-400 transition focus:bg-white focus:border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-100"
             />
             {query && (
-              <button type="button" onClick={() => setQuery('')} aria-label="Clear search" className="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400 hover:text-slate-700">
-                <i className="fa-solid fa-circle-xmark" aria-hidden="true"></i>
+              <button type="button" onClick={() => setQuery('')} aria-label="Clear search" className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-600">
+                <i className="fa-solid fa-xmark text-sm" aria-hidden="true"></i>
               </button>
             )}
           </div>
 
-          <div className="flex items-center gap-2 sm:gap-3">
+          <div className="flex items-center gap-2">
             <div className="relative" ref={regionMenuRef}>
-              <button type="button" onClick={() => setRegionMenuOpen((open) => !open)} className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition hover:border-amber-400">
-                <i className="fa-solid fa-map-location-dot text-brand-gold" aria-hidden="true"></i>
+              <button type="button" onClick={() => setRegionMenuOpen((open) => !open)} className="flex items-center gap-1.5 rounded-md border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-700 transition hover:border-gray-300 hover:bg-gray-50">
+                <i className="fa-solid fa-map-location-dot text-gray-400" aria-hidden="true"></i>
                 <span className="hidden sm:inline">{region === 'ALL' ? '17 Regions' : region}</span>
-                <i className="fa-solid fa-chevron-down text-xs text-slate-400" aria-hidden="true"></i>
+                <i className="fa-solid fa-chevron-down text-xs text-gray-400" aria-hidden="true"></i>
               </button>
               {regionMenuOpen && (
-                <div className="absolute right-0 z-50 mt-2 max-h-[80vh] w-[min(90vw,720px)] overflow-y-auto rounded-2xl border border-slate-200 bg-white p-4 shadow-2xl sm:p-6">
-                  <div className="mb-4 flex items-center justify-between border-b border-slate-100 pb-3">
+                <div className="absolute right-0 z-50 mt-1.5 max-h-[80vh] w-[min(90vw,680px)] overflow-y-auto rounded-lg border border-gray-200 bg-white p-4 shadow-lg sm:p-5">
+                  <div className="mb-3 flex items-center justify-between border-b border-gray-100 pb-3">
                     <div>
-                      <h3 className="text-sm font-bold text-slate-900">Explore Philippine Administrative Regions</h3>
-                      <p className="text-xs text-slate-500">Choose a region to view its local MSME shelves.</p>
+                      <h3 className="text-sm font-semibold text-gray-900">Philippine Administrative Regions</h3>
+                      <p className="mt-0.5 text-xs text-gray-500">Select a region to filter the shelf.</p>
                     </div>
-                    <button type="button" onClick={() => chooseRegion('ALL')} className="text-xs font-semibold text-amber-700 underline">Show all</button>
+                    <button type="button" onClick={() => chooseRegion('ALL')} className="text-xs font-medium text-blue-700 hover:text-blue-800">Show all</button>
                   </div>
-                  <div className="grid gap-5 sm:grid-cols-3">
+                  <div className="grid gap-4 sm:grid-cols-3">
                     {REGION_GROUPS.map((group) => (
                       <section key={group.name}>
-                        <h4 className="mb-2 flex items-center gap-2 border-b border-slate-100 pb-2 text-xs font-bold uppercase text-slate-700">
-                          <i className={`fa-solid ${group.icon} text-amber-600`} aria-hidden="true"></i>
-                          {group.name} ({group.regions.length})
+                        <h4 className="mb-2 border-b border-gray-100 pb-2 text-2xs font-bold uppercase tracking-wider text-gray-500">
+                          {group.name} <span className="font-normal">({group.regions.length})</span>
                         </h4>
-                        <div className="space-y-1">
+                        <div className="space-y-0.5">
                           {group.regions.map(([code, description]) => (
-                            <button key={code} type="button" onClick={() => chooseRegion(code)} className="flex w-full items-center justify-between rounded-lg px-2 py-2 text-left text-xs font-medium text-slate-700 hover:bg-amber-50">
-                              <span>{code}<span className="block text-[10px] text-slate-400">{description}</span></span>
-                              <i className="fa-solid fa-chevron-right text-[10px] text-slate-300" aria-hidden="true"></i>
+                            <button key={code} type="button" onClick={() => chooseRegion(code)} className={`flex w-full items-center justify-between rounded px-2 py-1.5 text-left transition ${region === code ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-50'}`}>
+                              <span className="text-xs font-medium">{code}<span className="block text-2xs font-normal text-gray-400">{description}</span></span>
+                              <i className="fa-solid fa-chevron-right text-[9px] text-gray-300" aria-hidden="true"></i>
                             </button>
                           ))}
                         </div>
@@ -850,134 +836,104 @@ function App() {
                 </div>
               )}
             </div>
-            <button type="button" onClick={() => setModal('tracking')} className="hidden items-center gap-2 rounded-xl border border-slate-200 px-3 py-2.5 text-sm font-medium text-slate-700 transition hover:border-amber-400 md:flex">
-              <i className="fa-solid fa-box-open text-amber-500" aria-hidden="true"></i><span>Track</span>
+            <button type="button" onClick={() => setModal('tracking')} className="hidden items-center gap-1.5 rounded-md border border-gray-200 px-3 py-2 text-sm font-medium text-gray-700 transition hover:border-gray-300 hover:bg-gray-50 md:flex">
+              <i className="fa-solid fa-box-open text-gray-400" aria-hidden="true"></i><span>Track</span>
             </button>
-            <button type="button" onClick={() => { setAuthTab(currentUser.isLoggedIn ? 'profile' : 'login'); setModal('auth'); }} className="hidden items-center gap-2 rounded-xl border border-slate-200 px-3 py-2.5 text-sm font-medium text-slate-700 transition hover:border-amber-400 sm:flex">
-              <i className="fa-solid fa-user text-amber-500" aria-hidden="true"></i><span>{currentUser.isLoggedIn ? currentUser.name.split(' ')[0] : 'Account'}</span>
+            <button type="button" onClick={() => { setAuthTab(currentUser.isLoggedIn ? 'profile' : 'login'); setModal('auth'); }} className="hidden items-center gap-1.5 rounded-md border border-gray-200 px-3 py-2 text-sm font-medium text-gray-700 transition hover:border-gray-300 hover:bg-gray-50 sm:flex">
+              <i className="fa-solid fa-user text-gray-400" aria-hidden="true"></i><span>{currentUser.isLoggedIn ? currentUser.name.split(' ')[0] : 'Account'}</span>
             </button>
-            <button type="button" onClick={() => setCartOpen(true)} aria-label={`Open basket, ${itemCount} items`} className="relative flex items-center gap-2 rounded-xl bg-brand-navy px-3 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-navyLight">
-              <i className="fa-solid fa-basket-shopping text-brand-gold" aria-hidden="true"></i>
+            <button type="button" onClick={() => setCartOpen(true)} aria-label={`Open basket, ${itemCount} items`} className="relative flex items-center gap-1.5 rounded-md border border-blue-700 bg-blue-700 px-3 py-2 text-sm font-semibold text-white transition hover:bg-blue-800">
+              <i className="fa-solid fa-basket-shopping" aria-hidden="true"></i>
               <span className="hidden sm:inline">Basket</span>
-              <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-brand-gold px-1 text-[10px] font-black text-brand-navy">{itemCount}</span>
+              <span className="tabular flex h-4.5 min-w-[1.125rem] items-center justify-center rounded-full bg-white px-1 text-[10px] font-bold text-blue-700">{itemCount}</span>
             </button>
           </div>
         </div>
-        <div className="px-4 pb-3 md:hidden">
-          <input type="search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search delicacies, makers, or regions..." aria-label="Search delicacies" className="w-full rounded-xl border border-slate-200 bg-slate-100 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-gold" />
+        <div className="border-t border-gray-100 px-4 pb-2.5 pt-2 md:hidden">
+          <input type="search" value={query} onChange={(event) => { setQuery(event.target.value); if (view !== 'shop') setView('shop'); }} placeholder="Search delicacies, makers, regions..." aria-label="Search delicacies" className="w-full rounded-md border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-100" />
         </div>
       </header>
 
-      <section className="banig-pattern relative overflow-hidden border-b border-slate-800 py-10 text-white sm:py-14">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl">
-            <span className="inline-flex items-center gap-2 rounded-full border border-amber-400/30 bg-amber-500/10 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-amber-300">
-              <i className="fa-solid fa-sun" aria-hidden="true"></i> From our regions, to your home
-            </span>
-            <h1 className="mt-4 font-serif text-3xl font-bold leading-tight sm:text-5xl">Discover the flavors of the Philippines.</h1>
-            <p className="mt-3 max-w-2xl text-sm leading-relaxed text-slate-300 sm:text-base">Shop authentic regional delicacies, directly from local makers and small businesses across the archipelago.</p>
-            <div className="mt-6 flex flex-wrap items-center gap-2">
-              <span className="mr-1 text-xs font-bold uppercase tracking-wider text-slate-400">Island group:</span>
-              {ISLANDS.map((name) => {
-                const active = island === name;
-                const label = name === 'ALL' ? 'All 17 Regions' : `${name}${name === 'Luzon' ? ' (8)' : name === 'Visayas' ? ' (3)' : ' (6)'}`;
-                return (
-                  <button key={name} type="button" onClick={() => chooseIsland(name)} className={`rounded-lg px-3.5 py-1.5 text-xs font-bold transition ${active ? 'bg-brand-gold text-brand-navy shadow-sm' : 'border border-slate-700 bg-slate-800/80 text-slate-300 hover:text-white'}`}>
-                    {label}
-                  </button>
-                );
-              })}
+      {view === 'shop' ? (
+        <>
+          <section className="border-b border-gray-200 bg-white py-10 sm:py-14">
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+              <div className="max-w-2xl">
+                <h1 className="font-serif text-3xl font-bold leading-tight text-gray-900 sm:text-4xl">Philippine regional delicacies, delivered.</h1>
+                <p className="mt-3 text-sm leading-relaxed text-gray-500 sm:text-base">Authentic pasalubong from 17 regions, sourced directly from local MSMEs across the archipelago.</p>
+                <div className="mt-5 flex flex-wrap items-center gap-2">
+                  <span className="mr-1 text-xs font-semibold uppercase tracking-wider text-gray-400">Island group</span>
+                  {ISLANDS.map((name) => {
+                    const active = island === name;
+                    const label = name === 'ALL' ? 'All 17 Regions' : `${name}${name === 'Luzon' ? ' (8)' : name === 'Visayas' ? ' (3)' : ' (6)'}`;
+                    return (
+                      <button key={name} type="button" onClick={() => chooseIsland(name)} className={`rounded-full px-4 py-1.5 text-xs font-semibold transition ${active ? 'bg-gray-900 text-white' : 'border border-gray-200 bg-white text-gray-600 hover:border-gray-300 hover:text-gray-900'}`}>
+                        {label}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-      </section>
+          </section>
 
-      <section className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-        <div className="grid gap-4 md:grid-cols-3">
-          <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-            <div className="mb-3 flex items-center gap-3">
-              <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-brand-navy text-brand-gold"><i className="fa-solid fa-store" aria-hidden="true"></i></span>
-              <h3 className="text-base font-black text-brand-navy">Business Description</h3>
-            </div>
-            <p className="text-sm leading-relaxed text-slate-600">E-Baligya is a digital pasalubong marketplace that helps regional Filipino MSMEs sell authentic products directly to customers nationwide while making delivery, trust, and payment tracking easier.</p>
-          </div>
-
-          <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-            <div className="mb-3 flex items-center gap-3">
-              <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-amber-100 text-amber-700"><i className="fa-solid fa-diagram-project" aria-hidden="true"></i></span>
-              <h3 className="text-base font-black text-brand-navy">System Flow</h3>
-            </div>
-            <ol className="space-y-2 text-sm text-slate-600">
-              <li>1. Browse regional delicacies and makers.</li>
-              <li>2. Add items to a secure basket.</li>
-              <li>3. Check out with delivery and payment selection.</li>
-              <li>4. Track packages and release escrow after delivery.</li>
-            </ol>
-          </div>
-
-          <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-            <div className="mb-3 flex items-center gap-3">
-              <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-100 text-emerald-700"><i className="fa-solid fa-heart" aria-hidden="true"></i></span>
-              <h3 className="text-base font-black text-brand-navy">Why It Matters</h3>
-            </div>
-            <p className="text-sm leading-relaxed text-slate-600">The system supports local producers, improves product visibility for niche regional goods, and creates a more trustworthy e-commerce experience for buyers across the archipelago.</p>
-          </div>
-        </div>
-      </section>
-
-      <main ref={productsSectionRef} className="scroll-mt-24 mx-auto w-full max-w-7xl flex-1 px-4 py-2 sm:px-6 lg:px-8">
-        <div className="mb-6 flex flex-col justify-between gap-4 border-b border-slate-200 pb-6 sm:flex-row sm:items-center">
+          <main ref={productsSectionRef} className="scroll-mt-20 mx-auto w-full max-w-7xl flex-1 px-4 py-6 sm:px-6 lg:px-8">
+        <div className="mb-5 flex flex-col justify-between gap-3 border-b border-gray-200 pb-5 sm:flex-row sm:items-center">
           <div>
             <div className="flex items-center gap-2">
-              <h2 className="text-xl font-black tracking-tight text-brand-navy sm:text-2xl">{shelfTitle}</h2>
-              <span className="rounded-full bg-slate-200 px-2 py-0.5 text-xs font-semibold text-slate-700">{filteredProducts.length} Items</span>
+              <h2 className="text-lg font-semibold text-gray-900">{shelfTitle}</h2>
+              <span className="tabular rounded border border-gray-200 px-2 py-0.5 text-xs text-gray-500">{filteredProducts.length}</span>
             </div>
-            <p className="mt-1 text-xs text-slate-500 sm:text-sm">{shelfSubtitle}</p>
+            <p className="mt-0.5 text-sm text-gray-500">{shelfSubtitle}</p>
           </div>
-          <div className="flex items-center gap-3">
-            <label htmlFor="sortSelect" className="text-xs font-medium text-slate-500">Sort by:</label>
-            <select id="sortSelect" value={sortBy} onChange={(event) => setSortBy(event.target.value)} className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-brand-gold">
-              <option value="featured">Featured / Best Sellers</option>
+          <div className="flex items-center gap-2.5">
+            <label htmlFor="sortSelect" className="text-xs text-gray-500">Sort</label>
+            <select id="sortSelect" value={sortBy} onChange={(event) => setSortBy(event.target.value)} className="rounded-md border border-gray-200 bg-white px-3 py-1.5 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-100">
+              <option value="featured">Featured</option>
               <option value="price-low">Price: Low to High</option>
               <option value="price-high">Price: High to Low</option>
               <option value="rating">Highest Rated</option>
             </select>
-            {(region !== 'ALL' || island !== 'ALL' || query) && <button type="button" onClick={resetFilters} className="rounded-lg border border-amber-200 bg-amber-50 px-2.5 py-1.5 text-xs font-semibold text-amber-700 hover:bg-amber-100">Clear filters</button>}
+            {(region !== 'ALL' || island !== 'ALL' || query) && <button type="button" onClick={resetFilters} className="rounded-md border border-gray-200 px-2.5 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-50">Clear filters</button>}
           </div>
         </div>
 
         {filteredProducts.length ? (
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             {filteredProducts.map((product) => (
-              <article key={product.id} className="group flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-all duration-300 hover:shadow-xl">
-                <div className="relative h-48 w-full overflow-hidden bg-slate-100">
+              <article key={product.id} className="group flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white transition-colors duration-200 hover:border-gray-300">
+                <div className="relative h-44 w-full overflow-hidden bg-gray-100">
                   <img src={product.image} alt={product.name} loading="lazy" onError={(event) => { event.currentTarget.src = FALLBACK_IMAGE; }} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-                  <span className="absolute left-3 top-3 rounded-full border border-amber-400/20 bg-brand-navy/90 px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wider text-amber-300">{product.region} · {product.island}</span>
-                  <span className={`absolute right-3 top-3 rounded px-2 py-0.5 text-[10px] font-semibold text-white shadow ${product.stock <= 0 ? 'bg-red-600' : 'bg-emerald-600/95'}`}>{product.stock <= 0 ? 'Out of Stock' : `${product.stock} fresh in hub`}</span>
-                  <div className="absolute bottom-2 left-3 right-3 text-xs text-white">
-                    <span className="flex items-center gap-1 truncate text-[10px] text-slate-300"><i className="fa-solid fa-location-dot text-amber-400" aria-hidden="true"></i>{product.province}</span>
-                  </div>
+                  <span className="absolute left-2 top-2 rounded bg-gray-900/75 px-2 py-0.5 text-2xs font-semibold uppercase tracking-wide text-white">{product.region} · {product.island}</span>
                 </div>
                 <div className="flex flex-1 flex-col justify-between p-4">
                   <div>
+                    <p className="mb-1 flex items-center gap-1 text-2xs text-gray-400">
+                      <i className="fa-solid fa-location-dot" aria-hidden="true"></i>{product.province}
+                      {product.stock <= 0
+                        ? <span className="ml-auto font-medium text-red-600">Out of stock</span>
+                        : <span className="ml-auto font-medium text-green-600">In stock</span>
+                      }
+                    </p>
                     {product.reviewCount > 0 && (
-                      <div className="mb-1.5 flex items-center justify-end text-xs">
-                        <span className="flex shrink-0 items-center gap-1 font-bold text-amber-500"><i className="fa-solid fa-star" aria-hidden="true"></i>{product.rating.toFixed(1)}<span className="text-[10px] font-normal text-slate-400">({product.reviewCount})</span></span>
-                      </div>
+                      <p className="mb-1 flex items-center gap-1 text-xs text-amber-500">
+                        <i className="fa-solid fa-star text-[10px]" aria-hidden="true"></i>
+                        <span className="tabular font-semibold">{product.rating.toFixed(1)}</span>
+                        <span className="text-gray-400">({product.reviewCount})</span>
+                      </p>
                     )}
-                    <h3 className="text-sm font-bold leading-snug text-slate-900 transition group-hover:text-amber-600">{product.name}</h3>
-                    <p className="mt-1 line-clamp-2 text-xs leading-relaxed text-slate-500">{product.description}</p>
+                    <h3 className="text-sm font-semibold leading-snug text-gray-900">{product.name}</h3>
+                    <p className="mt-1 line-clamp-2 text-xs leading-relaxed text-gray-500">{product.description}</p>
                   </div>
-                  <div className="mt-4 flex items-center justify-between border-t border-slate-100 pt-3">
-                    <div><strong className="text-base font-black text-brand-navy">{formatPeso(product.price)}</strong></div>
-                    <div className="flex items-center gap-2">
-                      <button type="button" onClick={() => { setSellerContactProduct(product); setSellerContactReturn(''); setModal('seller-contact'); }} className="flex items-center gap-1 rounded-xl border border-slate-200 px-2.5 py-2 text-[10px] font-bold text-slate-700 transition hover:border-amber-400 hover:text-amber-800">
-                        <i className="fa-solid fa-message" aria-hidden="true"></i>Seller
+                  <div className="mt-4 flex items-center justify-between border-t border-gray-100 pt-3">
+                    <strong className="tabular text-base font-bold text-gray-900">{formatPeso(product.price)}</strong>
+                    <div className="flex items-center gap-1.5">
+                      <button type="button" onClick={() => { setSellerContactProduct(product); setSellerContactReturn(''); setModal('seller-contact'); }} className="flex items-center gap-1 rounded-md border border-gray-200 px-2 py-1.5 text-xs font-medium text-gray-600 transition hover:border-gray-300 hover:bg-gray-50">
+                        <i className="fa-solid fa-message text-gray-400" aria-hidden="true"></i>Seller
                       </button>
-                      <button type="button" onClick={() => addToCart(product)} className={`flex items-center gap-1.5 rounded-xl px-3 py-2 text-xs font-bold transition ${product.stock <= 0 ? 'border border-red-200 bg-red-50 text-red-600 hover:bg-red-100' : 'bg-brand-navy text-white shadow-md hover:bg-brand-navyLight'}`}>
-                        <i className={`fa-solid ${product.stock <= 0 ? 'fa-circle-exclamation' : 'fa-plus text-brand-gold'}`} aria-hidden="true"></i>
-                        {product.stock <= 0 ? 'View Alternate' : 'Add'}
+                      <button type="button" onClick={() => addToCart(product)} className={`flex items-center gap-1 rounded-md px-3 py-1.5 text-xs font-semibold transition ${product.stock <= 0 ? 'border border-red-200 bg-red-50 text-red-600 hover:bg-red-100' : 'bg-blue-700 text-white hover:bg-blue-800'}`}>
+                        <i className={`fa-solid ${product.stock <= 0 ? 'fa-circle-exclamation' : 'fa-plus'}`} aria-hidden="true"></i>
+                        {product.stock <= 0 ? 'Alternate' : 'Add'}
                       </button>
                     </div>
                   </div>
@@ -986,76 +942,87 @@ function App() {
             ))}
           </div>
         ) : (
-          <div className="my-8 rounded-2xl border border-slate-200 bg-white px-6 py-16 text-center shadow-sm">
-            <span className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-amber-50 text-2xl text-amber-600"><i className="fa-solid fa-magnifying-glass-location" aria-hidden="true"></i></span>
-            <h3 className="text-lg font-bold text-slate-800">No regional delicacies found</h3>
-            <p className="mx-auto mt-1 max-w-sm text-sm text-slate-500">We couldn't find any products matching your active filters or search terms.</p>
-            <button type="button" onClick={resetFilters} className="mt-4 rounded-xl bg-brand-navy px-4 py-2 text-xs font-bold text-white transition hover:bg-brand-navyLight">Reset &amp; view all regions</button>
+          <div className="my-8 rounded-lg border border-gray-200 bg-white px-6 py-16 text-center">
+            <i className="fa-solid fa-magnifying-glass-location mb-4 text-3xl text-gray-300" aria-hidden="true"></i>
+            <h3 className="text-base font-semibold text-gray-800">No delicacies found</h3>
+            <p className="mx-auto mt-1 max-w-sm text-sm text-gray-500">No products match your current filters or search terms.</p>
+            <button type="button" onClick={resetFilters} className="mt-4 rounded-md border border-gray-200 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">Reset filters</button>
           </div>
         )}
       </main>
+    </>
+  ) : (
+        <AboutPage
+          onBackToShop={() => {
+            setView('shop');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          onOpenFlowchart={() => setModal('flowchart')}
+        />
+      )}
 
-      <footer className="mt-8 border-t border-slate-200 bg-white">
-        <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-6 text-xs text-slate-500 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
-          <span>© 2026 E-Baligya · Supporting Filipino regional makers and MSMEs.</span>
+      <footer className="mt-8 border-t border-gray-200 bg-white">
+        <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-5 text-xs text-gray-400 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
+          <span>© 2026 E-Baligya</span>
           <div className="flex flex-wrap gap-4">
-            <button type="button" onClick={() => { setSupportReturnModal(''); setModal('customer-support'); }} className="hover:text-brand-navy">Contact support</button>
-            <button type="button" onClick={() => setModal('tracking')} className="hover:text-brand-navy">Track an order</button>
-            <button type="button" onClick={() => setModal('auth')} className="hover:text-brand-navy">Account</button>
+            <button type="button" onClick={() => { setView('about'); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className={`hover:text-gray-700 transition ${view === 'about' ? 'font-semibold text-gray-900' : ''}`}>About</button>
+            <button type="button" onClick={() => { setSupportReturnModal(''); setModal('customer-support'); }} className="hover:text-gray-700">Contact support</button>
+            <button type="button" onClick={() => setModal('tracking')} className="hover:text-gray-700">Track an order</button>
+            <button type="button" onClick={() => setModal('auth')} className="hover:text-gray-700">Account</button>
           </div>
         </div>
       </footer>
 
       {cartOpen && (
-        <div className="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-[1px]" onMouseDown={(event) => { if (event.target === event.currentTarget) setCartOpen(false); }}>
-          <aside role="dialog" aria-modal="true" aria-label="Shopping basket" className="ml-auto flex h-full w-full max-w-[460px] flex-col bg-white shadow-2xl">
-            <div className="flex items-center justify-between border-b border-slate-200 bg-slate-50 p-5">
-              <div className="flex items-center gap-3">
-                <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-brand-navy text-brand-gold"><i className="fa-solid fa-basket-shopping" aria-hidden="true"></i></span>
-                <div><h2 className="font-bold text-slate-900">Your Pasalubong Basket</h2><p className="text-xs text-slate-500">{itemCount} items · {selectedItemCount} selected for checkout</p></div>
+        <div className="fixed inset-0 z-50 bg-black/40" onMouseDown={(event) => { if (event.target === event.currentTarget) setCartOpen(false); }}>
+          <aside role="dialog" aria-modal="true" aria-label="Shopping basket" className="ml-auto flex h-full w-full max-w-[440px] flex-col bg-white shadow-xl">
+            <div className="flex items-center justify-between border-b border-gray-200 px-5 py-4">
+              <div>
+                <h2 className="text-sm font-semibold text-gray-900">Basket</h2>
+                <p className="mt-0.5 text-xs text-gray-500"><span className="tabular">{itemCount}</span> items · <span className="tabular">{selectedItemCount}</span> selected</p>
               </div>
-              <button type="button" onClick={() => setCartOpen(false)} aria-label="Close basket" className="rounded-lg p-2 text-slate-400 hover:bg-slate-200"><i className="fa-solid fa-xmark" aria-hidden="true"></i></button>
+              <button type="button" onClick={() => setCartOpen(false)} aria-label="Close basket" className="rounded-md p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-700"><i className="fa-solid fa-xmark" aria-hidden="true"></i></button>
             </div>
-            <div className="flex-1 space-y-4 overflow-y-auto p-5">
+            <div className="flex-1 overflow-y-auto px-5 py-4">
               {cart.length > 0 && (
-                <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-                  <p className="text-[11px] text-slate-500">Choose which products to include in this order.</p>
+                <div className="mb-4 flex items-center justify-between border-b border-gray-100 pb-3">
+                  <p className="text-xs text-gray-500">Select items to include in this order.</p>
                   <button type="button" onClick={() => setSelectedCartIds(
                     selectedCartIds.length === cart.length ? [] : cart.map((item) => item.id)
-                  )} className="shrink-0 text-[11px] font-bold text-amber-700 hover:text-amber-900">
-                    {selectedCartIds.length === cart.length ? 'Clear selection' : 'Select all'}
+                  )} className="shrink-0 text-xs font-medium text-blue-700 hover:text-blue-800">
+                    {selectedCartIds.length === cart.length ? 'Clear all' : 'Select all'}
                   </button>
                 </div>
               )}
               {cart.length === 0 ? (
-                <div className="flex h-full flex-col items-center justify-center text-center">
-                  <i className="fa-solid fa-basket-shopping mb-4 text-4xl text-slate-300" aria-hidden="true"></i>
-                  <h3 className="font-bold text-slate-800">Your basket is empty</h3>
-                  <p className="mt-1 text-xs text-slate-500">Discover a regional favorite and add it to your basket.</p>
-                  <button type="button" onClick={continueBrowsing} className="mt-4 rounded-xl bg-brand-navy px-5 py-2.5 text-xs font-bold text-white">Continue browsing</button>
+                <div className="flex h-full flex-col items-center justify-center py-12 text-center">
+                  <i className="fa-solid fa-basket-shopping mb-4 text-3xl text-gray-200" aria-hidden="true"></i>
+                  <h3 className="text-sm font-semibold text-gray-800">Basket is empty</h3>
+                  <p className="mt-1 text-xs text-gray-500">Add a regional favorite to get started.</p>
+                  <button type="button" onClick={continueBrowsing} className="mt-4 rounded-md bg-blue-700 px-5 py-2 text-xs font-semibold text-white hover:bg-blue-800">Browse products</button>
                 </div>
               ) : cart.map((item) => (
-                <div key={item.id} className="flex items-start gap-3 border-b border-slate-100 pb-4">
+                <div key={item.id} className="flex items-start gap-3 border-b border-gray-100 pb-4">
                   <input
                     type="checkbox"
                     checked={selectedCartIds.includes(item.id)}
                     onChange={() => toggleCartItem(item.id)}
                     aria-label={`Select ${item.name} for checkout`}
-                    className="mt-5 h-4 w-4 shrink-0 accent-amber-500"
+                    className="mt-5 h-4 w-4 shrink-0 accent-blue-700"
                   />
-                  <img src={item.image} alt="" className="h-16 w-16 rounded-xl border border-slate-200 object-cover" />
+                  <img src={item.image} alt="" className="h-14 w-14 rounded-md border border-gray-200 object-cover" />
                   <div className="min-w-0 flex-1">
-                    <h3 className="truncate text-xs font-bold text-slate-900">{item.name}</h3>
-                    <p className="mt-0.5 text-[10px] text-slate-500">Origin: <strong>{item.region}</strong> ({item.island})</p>
-                    <p className="mt-1 text-xs font-extrabold text-amber-700">{formatPeso(item.price)}</p>
+                    <h3 className="truncate text-xs font-semibold text-gray-900">{item.name}</h3>
+                    <p className="mt-0.5 text-2xs text-gray-400">{item.region} · {item.island}</p>
+                    <p className="tabular mt-1 text-sm font-bold text-gray-900">{formatPeso(item.price)}</p>
                   </div>
                   <div className="flex shrink-0 flex-col items-center gap-2">
-                    <div className="flex items-center gap-1 rounded-lg bg-slate-100 p-1">
-                      <button type="button" onClick={() => changeQuantity(item.id, -1)} aria-label={`Remove one ${item.name}`} className="flex h-6 w-6 items-center justify-center rounded text-slate-600 hover:bg-white">−</button>
-                      <span className="px-1 text-xs font-bold text-slate-800">{item.quantity}</span>
-                      <button type="button" onClick={() => changeQuantity(item.id, 1)} aria-label={`Add one ${item.name}`} className="flex h-6 w-6 items-center justify-center rounded text-slate-600 hover:bg-white">+</button>
+                    <div className="flex items-center gap-0.5 rounded-md border border-gray-200 bg-gray-50">
+                      <button type="button" onClick={() => changeQuantity(item.id, -1)} aria-label={`Remove one ${item.name}`} className="flex h-7 w-7 items-center justify-center rounded-l-md text-gray-500 hover:bg-gray-100">−</button>
+                      <span className="tabular min-w-[1.5rem] text-center text-xs font-semibold text-gray-800">{item.quantity}</span>
+                      <button type="button" onClick={() => changeQuantity(item.id, 1)} aria-label={`Add one ${item.name}`} className="flex h-7 w-7 items-center justify-center rounded-r-md text-gray-500 hover:bg-gray-100">+</button>
                     </div>
-                    <button type="button" onClick={() => removeFromCart(item.id)} aria-label={`Delete ${item.name} from cart`} title="Remove from cart" className="rounded-md p-1.5 text-rose-500 transition hover:bg-rose-50 hover:text-rose-700">
+                    <button type="button" onClick={() => removeFromCart(item.id)} aria-label={`Delete ${item.name} from cart`} title="Remove from cart" className="rounded p-1 text-gray-400 transition hover:bg-red-50 hover:text-red-600">
                       <i className="fa-solid fa-trash-can text-xs" aria-hidden="true"></i>
                     </button>
                   </div>
@@ -1063,10 +1030,10 @@ function App() {
               ))}
             </div>
             {cart.length > 0 && (
-              <div className="space-y-4 border-t border-slate-200 bg-slate-50 p-5">
-                <p className="text-xs text-slate-500">Select the products you want to order. Shipping and order total will be calculated after you choose a delivery address at checkout.</p>
-                <button type="button" onClick={openCheckout} className="flex w-full items-center justify-center gap-2 rounded-xl bg-brand-navy px-4 py-3.5 text-sm font-bold text-white shadow-lg transition hover:bg-brand-navyLight">
-                  Checkout selected ({selectedItemCount}) <i className="fa-solid fa-arrow-right text-xs text-brand-gold" aria-hidden="true"></i>
+              <div className="space-y-3 border-t border-gray-200 p-5">
+                <p className="text-xs text-gray-500">Shipping calculated at checkout based on delivery address.</p>
+                <button type="button" onClick={openCheckout} className="flex w-full items-center justify-center gap-2 rounded-md bg-blue-700 px-4 py-3 text-sm font-semibold text-white transition hover:bg-blue-800">
+                  Checkout (<span className="tabular">{selectedItemCount}</span> selected) <i className="fa-solid fa-arrow-right text-xs" aria-hidden="true"></i>
                 </button>
               </div>
             )}
@@ -1075,49 +1042,49 @@ function App() {
       )}
 
       {modal === 'out-of-stock' && selectedProduct && (
-        <Modal title="Delicacy out of stock" icon="fa-boxes-stacked" onClose={() => setModal('')} size="max-w-md">
+        <Modal title="Out of stock" icon="fa-boxes-stacked" onClose={() => setModal('')} size="max-w-md">
           <div className="text-center">
-            <p className="text-sm font-semibold text-slate-800">{selectedProduct.name} is currently out of stock.</p>
-            <p className="mt-1 text-xs text-slate-500">Our regional MSME maker is preparing the next fresh batch.</p>
+            <p className="text-sm font-semibold text-gray-800">{selectedProduct.name} is currently out of stock.</p>
+            <p className="mt-1 text-xs text-gray-500">The regional MSME maker is preparing the next fresh batch.</p>
           </div>
           {(() => {
             const alternate = delicacies.find((item) => item.id === selectedProduct.alternateId)
               || delicacies.find((item) => item.island === selectedProduct.island && item.stock > 0);
             return alternate ? (
-              <div className="mt-5 flex items-center gap-3 rounded-xl border border-amber-200 bg-amber-50 p-3">
-                <img src={alternate.image} alt="" className="h-14 w-14 rounded-lg object-cover" />
-                <div className="min-w-0 flex-1"><strong className="block truncate text-xs text-slate-900">{alternate.name}</strong><span className="text-[11px] text-slate-500">{alternate.region} · {alternate.maker}</span><strong className="block text-xs text-amber-700">{formatPeso(alternate.price)}</strong></div>
-                <button type="button" onClick={addAlternate} className="rounded-lg bg-brand-gold px-3 py-2 text-[11px] font-bold text-brand-navy">Add</button>
+              <div className="mt-5 flex items-center gap-3 rounded-lg border border-gray-200 bg-gray-50 p-3">
+                <img src={alternate.image} alt="" className="h-14 w-14 rounded-md object-cover" />
+                <div className="min-w-0 flex-1"><strong className="block truncate text-xs text-gray-900">{alternate.name}</strong><span className="text-2xs text-gray-500">{alternate.region} · {alternate.maker}</span><strong className="tabular block text-sm text-gray-900">{formatPeso(alternate.price)}</strong></div>
+                <button type="button" onClick={addAlternate} className="rounded-md bg-blue-700 px-3 py-2 text-xs font-semibold text-white hover:bg-blue-800">Add</button>
               </div>
-            ) : <p className="mt-4 text-center text-xs text-slate-500">No in-stock alternative is available right now.</p>;
+            ) : <p className="mt-4 text-center text-xs text-gray-500">No in-stock alternative is available right now.</p>;
           })()}
         </Modal>
       )}
 
       {modal === 'seller-contact' && sellerContactProduct && (
-        <Modal title="Contact the seller" icon="fa-store" onClose={() => { setModal(sellerContactReturn); setSellerContactReturn(''); }} size="max-w-md">
+        <Modal title="Contact seller" icon="fa-store" onClose={() => { setModal(sellerContactReturn); setSellerContactReturn(''); }} size="max-w-md">
           <div className="space-y-4">
-            <section className="rounded-xl border border-slate-200 bg-slate-50 p-4">
-              <p className="text-[10px] font-bold uppercase tracking-wide text-slate-500">Seller</p>
-              <h3 className="mt-1 text-sm font-bold text-slate-900">{sellerContactProduct.maker}</h3>
-              <p className="mt-3 flex items-start gap-2 text-xs text-slate-700">
-                <i className="fa-solid fa-location-dot mt-0.5 text-amber-600" aria-hidden="true"></i>
-                <span><strong>Shop location</strong><br />{sellerContactProduct.province}</span>
+            <section className="rounded-lg border border-gray-200 bg-gray-50 p-4">
+              <p className="text-2xs font-semibold uppercase tracking-wide text-gray-400">Seller</p>
+              <h3 className="mt-1 text-sm font-semibold text-gray-900">{sellerContactProduct.maker}</h3>
+              <p className="mt-2 flex items-start gap-2 text-xs text-gray-600">
+                <i className="fa-solid fa-location-dot mt-0.5 text-gray-400" aria-hidden="true"></i>
+                <span>{sellerContactProduct.province}</span>
               </p>
-              <p className="mt-3 text-[10px] leading-relaxed text-slate-500">
-                A direct phone number or seller email is not listed for this maker in the catalog. Send an inquiry through this form instead.
+              <p className="mt-2 text-xs leading-relaxed text-gray-500">
+                No direct contact listed. Send an inquiry through this form.
               </p>
             </section>
             <form onSubmit={submitSellerInquiry} className="space-y-3">
-              <label className="block text-xs font-semibold text-slate-600">Your email for a reply
-                <input required type="email" defaultValue={currentUser.isLoggedIn ? currentUser.email : ''} placeholder="you@example.com" className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-xs font-normal focus:outline-none focus:ring-1 focus:ring-brand-gold" />
+              <label className="block text-xs font-medium text-gray-700">Your email
+                <input required type="email" defaultValue={currentUser.isLoggedIn ? currentUser.email : ''} placeholder="you@example.com" className="mt-1 w-full rounded-md border border-gray-200 px-3 py-2 text-sm text-gray-900 focus:border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-100" />
               </label>
-              <label className="block text-xs font-semibold text-slate-600">Message about {sellerContactProduct.name}
-                <textarea required rows="4" placeholder="Write your question for the seller..." className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-xs font-normal focus:outline-none focus:ring-1 focus:ring-brand-gold"></textarea>
+              <label className="block text-xs font-medium text-gray-700">Message about {sellerContactProduct.name}
+                <textarea required rows="4" placeholder="Write your question for the seller..." className="mt-1 w-full rounded-md border border-gray-200 px-3 py-2 text-sm text-gray-900 focus:border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-100"></textarea>
               </label>
-              <p className="text-[10px] text-slate-500">Demo only: seller inquiries are not delivered to the maker because this frontend has no messaging backend.</p>
-              <button type="submit" className="w-full rounded-xl bg-brand-navy px-4 py-3 text-xs font-bold text-white hover:bg-brand-navyLight">
-                <i className="fa-solid fa-paper-plane mr-1.5 text-brand-gold" aria-hidden="true"></i>Send inquiry
+              <p className="text-xs text-gray-400">Demo only — inquiries are not sent to the maker.</p>
+              <button type="submit" className="w-full rounded-md bg-blue-700 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-800">
+                <i className="fa-solid fa-paper-plane mr-1.5" aria-hidden="true"></i>Send inquiry
               </button>
             </form>
           </div>
@@ -1125,176 +1092,175 @@ function App() {
       )}
 
       {modal === 'customer-support' && (
-        <Modal title="Contact customer support" icon="fa-headset" onClose={() => setModal(supportReturnModal)} size="max-w-md">
+        <Modal title="Customer support" icon="fa-headset" onClose={() => setModal(supportReturnModal)} size="max-w-md">
           <form onSubmit={submitCustomerSupportRequest} className="space-y-3">
             {supportReturnModal === 'tracking' && (
-              <p className="rounded-lg border border-slate-200 bg-slate-50 p-3 text-xs text-slate-600">
-                Order <strong className="text-slate-800">{activeOrder.orderId}</strong>
+              <p className="rounded-md border border-gray-200 bg-gray-50 p-3 text-xs text-gray-600">
+                Order <strong className="text-gray-800">{activeOrder.orderId}</strong>
               </p>
             )}
-            <label className="block text-xs font-semibold text-slate-600">Your email
-              <input required type="email" autoComplete="email" defaultValue={currentUser.isLoggedIn ? currentUser.email : ''} placeholder="you@example.com" className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-xs font-normal focus:outline-none focus:ring-1 focus:ring-brand-gold" />
+            <label className="block text-xs font-medium text-gray-700">Your email
+              <input required type="email" autoComplete="email" defaultValue={currentUser.isLoggedIn ? currentUser.email : ''} placeholder="you@example.com" className="mt-1 w-full rounded-md border border-gray-200 px-3 py-2 text-sm text-gray-900 focus:border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-100" />
             </label>
-            <label className="block text-xs font-semibold text-slate-600">How can we help?
-              <textarea required rows="4" placeholder="Describe your question or concern..." className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-xs font-normal focus:outline-none focus:ring-1 focus:ring-brand-gold"></textarea>
+            <label className="block text-xs font-medium text-gray-700">How can we help?
+              <textarea required rows="4" placeholder="Describe your question or concern..." className="mt-1 w-full rounded-md border border-gray-200 px-3 py-2 text-sm text-gray-900 focus:border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-100"></textarea>
             </label>
-            <p className="text-[10px] text-slate-500">Demo only: support messages are not delivered because this app has no support backend yet.</p>
-            <button type="submit" className="w-full rounded-xl bg-brand-navy px-4 py-3 text-xs font-bold text-white hover:bg-brand-navyLight">
-              <i className="fa-solid fa-paper-plane mr-1.5 text-brand-gold" aria-hidden="true"></i>Send support request
+            <p className="text-xs text-gray-400">Demo only — messages are not delivered to a support team.</p>
+            <button type="submit" className="w-full rounded-md bg-blue-700 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-800">
+              <i className="fa-solid fa-paper-plane mr-1.5" aria-hidden="true"></i>Send support request
             </button>
           </form>
         </Modal>
       )}
 
       {modal === 'checkout' && (
-        <Modal title="Checkout order" icon="fa-cash-register" onClose={() => setModal('')}>
+        <Modal title="Checkout" icon="fa-cash-register" onClose={() => setModal('')}>
           <form onSubmit={executePayment} className="space-y-5">
-            <p className="rounded-lg border border-sky-200 bg-sky-50 p-3 text-xs leading-relaxed text-sky-900">
+            <p className="rounded-md border border-blue-100 bg-blue-50 p-3 text-xs leading-relaxed text-blue-800">
               <i className="fa-solid fa-circle-info mr-1.5" aria-hidden="true"></i>
-              Demo checkout: no real payment is processed and shipping is an estimate. Review your items, recipient contact, and destination before placing the order.
+              Demo checkout — no real payment is processed. Review items and address before placing the order.
             </p>
             <section>
-              <h3 className="mb-2 text-xs font-bold uppercase tracking-wide text-slate-800">
-                <i className="fa-solid fa-basket-shopping mr-1.5 text-amber-500" aria-hidden="true"></i>
-                Products in this order ({selectedItemCount} items)
+              <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-gray-500">
+                Order items (<span className="tabular">{selectedItemCount}</span>)
               </h3>
-              <div className="space-y-2 rounded-xl border border-slate-200 bg-slate-50 p-3">
+              <div className="space-y-2 rounded-lg border border-gray-200 bg-gray-50 p-3">
                 {selectedCartItems.map((item) => (
-                  <div key={item.id} className="flex items-center gap-3 rounded-lg bg-white p-2.5">
-                    <img src={item.image} alt="" className="h-12 w-12 rounded-lg border border-slate-200 object-cover" />
+                  <div key={item.id} className="flex items-center gap-3 rounded-md bg-white p-2.5">
+                    <img src={item.image} alt="" className="h-10 w-10 rounded-md border border-gray-200 object-cover" />
                     <div className="min-w-0 flex-1">
-                      <p className="truncate text-xs font-bold text-slate-800">{item.name}</p>
-                      <p className="text-[10px] text-slate-500">Qty {item.quantity} · {formatPeso(item.price)} each</p>
+                      <p className="truncate text-xs font-semibold text-gray-800">{item.name}</p>
+                      <p className="tabular text-2xs text-gray-400">Qty {item.quantity} · {formatPeso(item.price)} each</p>
                     </div>
-                    <strong className="text-xs text-slate-800">{formatPeso(item.price * item.quantity, 2)}</strong>
+                    <strong className="tabular text-xs text-gray-800">{formatPeso(item.price * item.quantity, 2)}</strong>
                   </div>
                 ))}
-                <div className="flex justify-between border-t border-slate-200 pt-2 text-xs font-bold text-slate-700">
+                <div className="tabular mt-1 flex justify-between border-t border-gray-100 pt-2 text-xs text-gray-500">
                   <span>Items subtotal</span><span>{formatPeso(subtotal, 2)}</span>
                 </div>
               </div>
             </section>
             <section>
-              <h3 className="mb-2 text-xs font-bold uppercase tracking-wide text-slate-800"><i className="fa-solid fa-location-dot mr-1.5 text-amber-500" aria-hidden="true"></i>Philippine delivery address</h3>
-              <div className="space-y-2 rounded-xl border border-slate-200 bg-slate-50 p-3.5">
+              <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-gray-500">Delivery address</h3>
+              <div className="space-y-2 rounded-lg border border-gray-200 bg-gray-50 p-3">
                 {savedAddresses.map((address) => (
-                  <div key={address.id} className={`flex items-start gap-3 rounded-lg border bg-white p-3 ${selectedCheckoutAddressId === address.id ? 'border-amber-400 ring-1 ring-amber-200' : 'border-slate-200'}`}>
+                  <div key={address.id} className={`flex items-start gap-3 rounded-md border bg-white p-3 ${selectedCheckoutAddressId === address.id ? 'border-blue-400 ring-1 ring-blue-100' : 'border-gray-200'}`}>
                     <label className="flex min-w-0 flex-1 cursor-pointer gap-3">
-                      <input type="radio" name="checkoutAddress" checked={selectedCheckoutAddressId === address.id} onChange={() => chooseCheckoutAddress(address.id)} className="mt-0.5 accent-amber-500" />
-                      <span className="min-w-0 text-[11px] text-slate-700">
-                        <span className="flex flex-wrap items-center gap-2 font-bold text-slate-800">
+                      <input type="radio" name="checkoutAddress" checked={selectedCheckoutAddressId === address.id} onChange={() => chooseCheckoutAddress(address.id)} className="mt-0.5 accent-blue-700" />
+                      <span className="min-w-0 text-xs text-gray-700">
+                        <span className="flex flex-wrap items-center gap-2 font-semibold text-gray-900">
                           {address.label || 'Address'} · {address.name}
-                          {address.isDefault && <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[9px] font-bold uppercase text-amber-800">Default</span>}
+                          {address.isDefault && <span className="rounded border border-gray-200 px-1.5 py-0.5 text-2xs font-medium text-gray-500">Default</span>}
                         </span>
-                        <span className="mt-1 block">{address.phone} · {address.email || currentUser.email}</span>
-                        <span className="mt-0.5 block">{address.address}, {address.city}, {address.province}</span>
+                        <span className="mt-1 block text-gray-500">{address.phone} · {address.email || currentUser.email}</span>
+                        <span className="mt-0.5 block text-gray-500">{address.address}, {address.city}, {address.province}</span>
                       </span>
                     </label>
-                    <button type="button" onClick={() => editCheckoutAddress(address)} aria-label={`Edit ${address.label || 'saved'} delivery address`} title="Edit delivery contact and address" className="shrink-0 rounded-lg p-2 text-slate-500 hover:bg-amber-50 hover:text-amber-700">
+                    <button type="button" onClick={() => editCheckoutAddress(address)} aria-label={`Edit ${address.label || 'saved'} delivery address`} title="Edit delivery contact and address" className="shrink-0 rounded-md p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-700">
                       <i className="fa-solid fa-pen-to-square" aria-hidden="true"></i>
                     </button>
                   </div>
                 ))}
-                <label className={`flex cursor-pointer items-center gap-3 rounded-lg border bg-white p-3 text-xs font-semibold ${selectedCheckoutAddressId === 'new' ? 'border-amber-400 ring-1 ring-amber-200' : 'border-slate-200'}`}>
-                  <input type="radio" name="checkoutAddress" checked={selectedCheckoutAddressId === 'new'} onChange={() => chooseCheckoutAddress('new')} className="accent-amber-500" />
-                  <span><i className="fa-solid fa-plus mr-2 text-amber-600" aria-hidden="true"></i>Deliver to a new address</span>
+                <label className={`flex cursor-pointer items-center gap-3 rounded-md border bg-white p-3 text-sm font-medium ${selectedCheckoutAddressId === 'new' ? 'border-blue-400 ring-1 ring-blue-100' : 'border-gray-200'}`}>
+                  <input type="radio" name="checkoutAddress" checked={selectedCheckoutAddressId === 'new'} onChange={() => chooseCheckoutAddress('new')} className="accent-blue-700" />
+                  <span><i className="fa-solid fa-plus mr-2 text-gray-400" aria-hidden="true"></i>Deliver to a new address</span>
                 </label>
               </div>
 
               {(selectedCheckoutAddressId === 'new' || editingCheckoutAddressId === selectedCheckoutAddressId) && (
-                <div className="mt-3 grid gap-3 rounded-xl border border-slate-200 bg-slate-50 p-3.5 sm:grid-cols-2">
-                  <label className="text-[11px] font-semibold text-slate-600">Recipient name
-                    <input required autoComplete="name" value={checkoutAddress.name} onChange={(event) => { setCheckoutAddressError(''); setCheckoutAddress((address) => ({ ...address, name: event.target.value })); }} className="mt-1 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-normal text-slate-800" />
+                <div className="mt-3 grid gap-3 rounded-lg border border-gray-200 bg-gray-50 p-3 sm:grid-cols-2">
+                  <label className="text-xs font-medium text-gray-700">Recipient name
+                    <input required autoComplete="name" value={checkoutAddress.name} onChange={(event) => { setCheckoutAddressError(''); setCheckoutAddress((address) => ({ ...address, name: event.target.value })); }} className="mt-1 w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:border-gray-300 focus:outline-none" />
                   </label>
-                  <label className="text-[11px] font-semibold text-slate-600">Phone number
-                    <input required type="tel" autoComplete="tel" placeholder="0917 123 4567" aria-invalid={Boolean(checkoutAddressError && !isValidPhilippinePhone(checkoutAddress.phone))} value={checkoutAddress.phone} onChange={(event) => { setCheckoutAddressError(''); setCheckoutAddress((address) => ({ ...address, phone: event.target.value })); }} className="mt-1 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-normal text-slate-800" />
+                  <label className="text-xs font-medium text-gray-700">Phone number
+                    <input required type="tel" autoComplete="tel" placeholder="0917 123 4567" aria-invalid={Boolean(checkoutAddressError && !isValidPhilippinePhone(checkoutAddress.phone))} value={checkoutAddress.phone} onChange={(event) => { setCheckoutAddressError(''); setCheckoutAddress((address) => ({ ...address, phone: event.target.value })); }} className="mt-1 w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:border-gray-300 focus:outline-none" />
                   </label>
-                  <label className="text-[11px] font-semibold text-slate-600 sm:col-span-2">Email address
+                  <label className="text-xs font-medium text-gray-700 sm:col-span-2">Email address
                     <input required type="email" autoComplete="email" aria-invalid={Boolean(checkoutAddressError && !isValidEmail(checkoutAddress.email))} value={checkoutAddress.email} onChange={(event) => {
                       const email = event.target.value;
                       setCheckoutAddressError(email && !isValidEmail(email) ? 'Enter a valid email address for this delivery contact.' : '');
                       setCheckoutAddress((address) => ({ ...address, email }));
-                    }} className="mt-1 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-normal text-slate-800" />
+                    }} className="mt-1 w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:border-gray-300 focus:outline-none" />
                   </label>
-                  <label className="text-[11px] font-semibold text-slate-600 sm:col-span-2">Street / Barangay / Landmark
-                    <input required autoComplete="street-address" aria-invalid={Boolean(checkoutAddressError && !checkoutAddress.address.trim())} value={checkoutAddress.address} onChange={(event) => { setCheckoutAddressError(''); setCheckoutAddress((address) => ({ ...address, address: event.target.value })); }} className="mt-1 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-normal text-slate-800" />
+                  <label className="text-xs font-medium text-gray-700 sm:col-span-2">Street / Barangay / Landmark
+                    <input required autoComplete="street-address" aria-invalid={Boolean(checkoutAddressError && !checkoutAddress.address.trim())} value={checkoutAddress.address} onChange={(event) => { setCheckoutAddressError(''); setCheckoutAddress((address) => ({ ...address, address: event.target.value })); }} className="mt-1 w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:border-gray-300 focus:outline-none" />
                   </label>
-                  <label className="text-[11px] font-semibold text-slate-600">Province
+                  <label className="text-xs font-medium text-gray-700">Province
                     <select required value={checkoutAddress.province} onChange={(event) => {
                       setCheckoutAddressError('');
                       const province = event.target.value;
                       setCheckoutAddress((address) => ({ ...address, province, city: '' }));
-                    }} className="mt-1 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-normal text-slate-800">
+                    }} className="mt-1 w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:border-gray-300 focus:outline-none">
                       <option value="">Select province</option>
                       {PROVINCE_OPTIONS.map((province) => <option key={province} value={province}>{province}</option>)}
                     </select>
                   </label>
-                  <label className="text-[11px] font-semibold text-slate-600">City / Municipality
-                    <select required value={checkoutAddress.city} onChange={(event) => { setCheckoutAddressError(''); setCheckoutAddress((address) => ({ ...address, city: event.target.value })); }} className="mt-1 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-normal text-slate-800">
+                  <label className="text-xs font-medium text-gray-700">City / Municipality
+                    <select required value={checkoutAddress.city} onChange={(event) => { setCheckoutAddressError(''); setCheckoutAddress((address) => ({ ...address, city: event.target.value })); }} className="mt-1 w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:border-gray-300 focus:outline-none">
                       <option value="">Select city / municipality</option>
                       {(PH_PROVINCES[checkoutAddress.province] || []).map((city) => <option key={city} value={city}>{city}</option>)}
                     </select>
                   </label>
                   {currentUser.isLoggedIn && (
                     selectedCheckoutAddressId === 'new' && <div className="space-y-2 sm:col-span-2">
-                      <label className="flex items-center gap-2 text-[11px] font-medium text-slate-600">
+                      <label className="flex items-center gap-2 text-xs font-medium text-gray-600">
                         <input type="checkbox" checked={saveCheckoutAddress} onChange={(event) => {
                           setSaveCheckoutAddress(event.target.checked);
                           if (!event.target.checked) setMakeCheckoutAddressDefault(false);
-                        }} className="accent-amber-500" />
-                        Save this address to my address book for future orders
+                        }} className="accent-blue-700" />
+                        Save this address to my address book
                       </label>
                       {saveCheckoutAddress && (
-                        <label className="flex items-center gap-2 text-[11px] font-medium text-slate-600">
-                          <input type="checkbox" checked={makeCheckoutAddressDefault} onChange={(event) => setMakeCheckoutAddressDefault(event.target.checked)} className="accent-amber-500" />
-                          Set this as my default address
+                        <label className="flex items-center gap-2 text-xs font-medium text-gray-600">
+                          <input type="checkbox" checked={makeCheckoutAddressDefault} onChange={(event) => setMakeCheckoutAddressDefault(event.target.checked)} className="accent-blue-700" />
+                          Set as my default address
                         </label>
                       )}
                     </div>
                   )}
                   {editingCheckoutAddressId && (
                     <div className="flex gap-2 sm:col-span-2">
-                      <button type="button" onClick={() => { setEditingCheckoutAddressId(null); chooseCheckoutAddress(editingCheckoutAddressId); }} className="flex-1 rounded-lg border border-slate-300 px-3 py-2 text-xs font-bold text-slate-700">Cancel</button>
-                      <button type="button" onClick={saveCheckoutAddressChanges} className="flex-1 rounded-lg bg-brand-navy px-3 py-2 text-xs font-bold text-white">Save address changes</button>
+                      <button type="button" onClick={() => { setEditingCheckoutAddressId(null); chooseCheckoutAddress(editingCheckoutAddressId); }} className="flex-1 rounded-md border border-gray-200 px-3 py-2 text-xs font-medium text-gray-700 hover:bg-gray-50">Cancel</button>
+                      <button type="button" onClick={saveCheckoutAddressChanges} className="flex-1 rounded-md bg-blue-700 px-3 py-2 text-xs font-semibold text-white hover:bg-blue-800">Save changes</button>
                     </div>
                   )}
                 </div>
               )}
               {checkoutAddressError && <p role="alert" className="mt-2 text-xs font-medium text-red-600">{checkoutAddressError}</p>}
-              <label className="mt-3 block text-[11px] font-semibold text-slate-600">Delivery instructions <span className="font-normal text-slate-400">(optional)</span>
-                <textarea rows="2" value={checkoutDeliveryNotes} onChange={(event) => setCheckoutDeliveryNotes(event.target.value)} placeholder="Gate code, landmark, or when to call" className="mt-1 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-normal text-slate-800" />
+              <label className="mt-3 block text-xs font-medium text-gray-700">Delivery instructions <span className="font-normal text-gray-400">(optional)</span>
+                <textarea rows="2" value={checkoutDeliveryNotes} onChange={(event) => setCheckoutDeliveryNotes(event.target.value)} placeholder="Gate code, landmark, or when to call" className="mt-1 w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:border-gray-300 focus:outline-none" />
               </label>
             </section>
             <section>
-              <h3 className="mb-2 text-xs font-bold uppercase tracking-wide text-slate-800"><i className="fa-solid fa-credit-card mr-1.5 text-amber-500" aria-hidden="true"></i>Payment processing method</h3>
-              <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-4">
+              <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-gray-500">Payment method</h3>
+              <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
                 {[
                   ['GCash', 'G', 'E-Wallet', 'bg-blue-600'],
                   ['Maya', 'M', 'Scan QR', 'bg-emerald-600'],
-                  ['Card', 'C', 'Debit/Credit', 'bg-slate-800'],
+                  ['Card', 'C', 'Debit/Credit', 'bg-gray-800'],
                   ['COD', '₱', 'Doorstep', 'bg-amber-600']
                 ].map(([method, symbol, hint, color]) => (
-                  <label key={method} className={`flex cursor-pointer flex-col items-center rounded-xl border p-3 text-center transition ${paymentMethod === method ? 'border-brand-gold bg-amber-50/50' : 'border-slate-200 hover:border-amber-400'}`}>
+                  <label key={method} className={`flex cursor-pointer flex-col items-center rounded-lg border p-3 text-center transition ${paymentMethod === method ? 'border-blue-400 bg-blue-50' : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'}`}>
                     <input type="radio" name="paymentMethod" value={method} checked={paymentMethod === method} onChange={() => setPaymentMethod(method)} className="sr-only" />
-                    <span className={`mb-1 flex h-8 w-8 items-center justify-center rounded-full text-xs font-black text-white ${color}`}>{symbol}</span>
-                    <strong className="text-xs text-slate-800">{method}</strong><span className="text-[10px] text-slate-400">{hint}</span>
+                    <span className={`mb-1.5 flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold text-white ${color}`}>{symbol}</span>
+                    <strong className="text-xs text-gray-800">{method}</strong><span className="text-2xs text-gray-400">{hint}</span>
                   </label>
                 ))}
               </div>
             </section>
-            <div className="rounded-xl border border-slate-200 p-3 text-xs">
-              <div className="mb-2 flex justify-between gap-3 text-[11px] text-slate-500">
-                <span>Shipping destination</span>
-                <span className="text-right font-medium text-slate-700">{checkoutAddress.city}, {checkoutAddress.province}</span>
+            <div className="rounded-lg border border-gray-200 p-3 text-sm">
+              <div className="mb-2 flex justify-between gap-3 text-xs text-gray-400">
+                <span>Destination</span>
+                <span className="text-right font-medium text-gray-600">{checkoutAddress.city}, {checkoutAddress.province}</span>
               </div>
-              <div className="flex justify-between text-slate-600"><span>Pasalubong subtotal</span><span>{formatPeso(subtotal, 2)}</span></div>
-              <div className="mt-1 flex justify-between text-slate-600"><span>Estimated shipping</span><span>{formatPeso(shipping, 2)}</span></div>
-              <div className="mt-2 flex justify-between border-t border-slate-100 pt-2 font-bold text-brand-navy"><span>Total</span><span>{formatPeso(total, 2)}</span></div>
+              <div className="tabular flex justify-between text-gray-600"><span>Subtotal</span><span>{formatPeso(subtotal, 2)}</span></div>
+              <div className="tabular mt-1 flex justify-between text-gray-600"><span>Estimated shipping</span><span>{formatPeso(shipping, 2)}</span></div>
+              <div className="tabular mt-2 flex justify-between border-t border-gray-100 pt-2 font-semibold text-gray-900"><span>Total</span><span>{formatPeso(total, 2)}</span></div>
             </div>
-            <div className="flex gap-3 border-t border-slate-100 pt-4">
-              <button type="button" onClick={() => setModal('')} className="flex-1 rounded-xl border border-slate-300 px-4 py-3 text-xs font-semibold text-slate-700 hover:bg-slate-50">Cancel</button>
-              <button type="submit" disabled={paymentLoading} className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-brand-navy px-4 py-3 text-xs font-bold text-white transition hover:bg-brand-navyLight disabled:opacity-60">
-                {paymentLoading ? <><i className="fa-solid fa-spinner fa-spin" aria-hidden="true"></i> Authorizing...</> : <><i className="fa-solid fa-lock text-brand-gold" aria-hidden="true"></i> Authorize &amp; place order</>}
+            <div className="flex gap-3 border-t border-gray-100 pt-4">
+              <button type="button" onClick={() => setModal('')} className="flex-1 rounded-md border border-gray-200 px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50">Cancel</button>
+              <button type="submit" disabled={paymentLoading} className="flex flex-1 items-center justify-center gap-2 rounded-md bg-blue-700 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-800 disabled:opacity-60">
+                {paymentLoading ? <><i className="fa-solid fa-spinner fa-spin" aria-hidden="true"></i> Authorizing...</> : <><i className="fa-solid fa-lock" aria-hidden="true"></i> Place order</>}
               </button>
             </div>
           </form>
@@ -1302,33 +1268,33 @@ function App() {
       )}
 
       {modal === 'tracking' && (
-        <Modal title="Track package" icon="fa-box-open" onClose={() => setModal('')} size="max-w-2xl">
-          <p className="mb-4 rounded-lg border border-sky-200 bg-sky-50 p-3 text-xs leading-relaxed text-sky-900">
-            Demo tracking only: live courier updates are not connected, so the timeline below is illustrative rather than a real shipment status.
+        <Modal title="Track order" icon="fa-box-open" onClose={() => setModal('')} size="max-w-2xl">
+          <p className="mb-4 rounded-md border border-blue-100 bg-blue-50 p-3 text-xs leading-relaxed text-blue-800">
+            Demo tracking — live courier updates are not connected. The timeline below is illustrative.
           </p>
           <form onSubmit={performTrackingLookup} className="mb-5 grid gap-2 sm:grid-cols-[1fr_auto]">
-            <label className="text-[10px] font-bold uppercase text-slate-500">Order ID
-              <input value={trackInputId} onChange={(event) => setTrackInputId(event.target.value)} placeholder="e.g. EB-2026-7842" className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-xs font-normal normal-case text-slate-800 focus:outline-none focus:ring-1 focus:ring-brand-gold" />
+            <label className="text-xs font-medium text-gray-500">Order ID
+              <input value={trackInputId} onChange={(event) => setTrackInputId(event.target.value)} placeholder="e.g. EB-2026-7842" className="mt-1 w-full rounded-md border border-gray-200 px-3 py-2 text-sm normal-case text-gray-800 focus:border-gray-300 focus:outline-none" />
             </label>
-            <button type="submit" className="self-end rounded-lg bg-brand-navy px-4 py-2 text-xs font-bold text-white hover:bg-brand-navyLight">Track order</button>
+            <button type="submit" className="self-end rounded-md bg-blue-700 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-800">Track</button>
           </form>
-          <div className="flex flex-col justify-between gap-3 rounded-xl bg-gradient-to-r from-brand-navy to-brand-navyLight p-4 text-white sm:flex-row sm:items-center">
-            <div><span className="text-[10px] font-bold uppercase tracking-wider text-amber-400">Active package</span><h3 className="font-mono text-xl font-bold">{activeOrder.orderId}</h3><span className="text-xs text-slate-300">Routed via Philippine domestic delivery</span></div>
-            <div className="rounded-lg border border-white/15 bg-white/10 px-3.5 py-2 text-right"><span className="block text-[10px] font-bold uppercase text-amber-300">Demo payment</span><strong className="text-xs">{activeOrder.paymentMethod || 'GCash'} selected · not charged</strong><span className="block text-[9px] text-slate-300">No payment or escrow transaction is connected</span></div>
+          <div className="flex flex-col justify-between gap-3 rounded-lg border border-gray-200 bg-gray-50 p-4 sm:flex-row sm:items-center">
+            <div><span className="text-2xs font-semibold uppercase tracking-wider text-gray-400">Active package</span><h3 className="tabular font-mono text-xl font-bold text-gray-900">{activeOrder.orderId}</h3><span className="text-xs text-gray-500">Routed via Philippine domestic delivery</span></div>
+            <div className="rounded-md border border-gray-200 bg-white px-3.5 py-2 text-right"><span className="block text-2xs font-semibold uppercase text-gray-400">Demo payment</span><strong className="text-sm text-gray-800">{activeOrder.paymentMethod || 'GCash'} selected</strong><span className="block text-2xs text-gray-400">Not charged — no escrow connected</span></div>
           </div>
           {activeOrder.deliveryAddress && (
-            <section className="mt-4 rounded-xl border border-slate-200 bg-slate-50 p-4">
-              <h3 className="text-xs font-bold text-slate-800"><i className="fa-solid fa-location-dot mr-1.5 text-amber-600" aria-hidden="true"></i>Order delivery details</h3>
-              <p className="mt-2 text-[11px] font-semibold text-slate-800">{activeOrder.deliveryAddress.name}</p>
-              <p className="text-[11px] text-slate-600">{activeOrder.deliveryAddress.address}, {activeOrder.deliveryAddress.city}, {activeOrder.deliveryAddress.province}</p>
-              <p className="mt-1 text-[11px] text-slate-600">{activeOrder.deliveryAddress.phone} · {activeOrder.deliveryAddress.email}</p>
-              {activeOrder.deliveryAddress.deliveryNotes && <p className="mt-1 text-[10px] text-slate-500">Instructions: {activeOrder.deliveryAddress.deliveryNotes}</p>}
-              <p className="mt-2 text-[10px] text-slate-500">Payment method: {activeOrder.paymentMethod}</p>
+            <section className="mt-4 rounded-lg border border-gray-200 bg-gray-50 p-4">
+              <h3 className="text-xs font-semibold text-gray-700"><i className="fa-solid fa-location-dot mr-1.5 text-gray-400" aria-hidden="true"></i>Delivery details</h3>
+              <p className="mt-2 text-xs font-semibold text-gray-800">{activeOrder.deliveryAddress.name}</p>
+              <p className="text-xs text-gray-500">{activeOrder.deliveryAddress.address}, {activeOrder.deliveryAddress.city}, {activeOrder.deliveryAddress.province}</p>
+              <p className="mt-1 text-xs text-gray-500">{activeOrder.deliveryAddress.phone} · {activeOrder.deliveryAddress.email}</p>
+              {activeOrder.deliveryAddress.deliveryNotes && <p className="mt-1 text-xs text-gray-400">Instructions: {activeOrder.deliveryAddress.deliveryNotes}</p>}
+              <p className="mt-2 text-xs text-gray-400">Payment: {activeOrder.paymentMethod}</p>
             </section>
           )}
           <section className="mt-6">
-            <h3 className="mb-4 text-xs font-bold uppercase tracking-wide text-slate-700"><i className="fa-solid fa-truck-ramp-box mr-1.5 text-amber-500" aria-hidden="true"></i>Logistics tracking lifecycle</h3>
-            <ol className="ml-3 space-y-5 border-l-2 border-slate-200 pl-6 text-xs">
+            <h3 className="mb-4 text-xs font-semibold uppercase tracking-wide text-gray-500">Shipment timeline</h3>
+            <ol className="ml-3 space-y-5 border-l-2 border-gray-200 pl-6 text-xs">
               {[
                 ['Origin hub: regional MSME dispatched', 'Producer packed authentic pasalubong at the regional hub.', 'fa-box'],
                 ['Inter-island package transit', 'Package departed the regional sorting hub.', 'fa-plane'],
@@ -1337,35 +1303,35 @@ function App() {
               ].map(([title, description, icon], index) => {
                 const complete = index < 2;
                 return <li key={title} className="relative">
-                  <span className={`absolute -left-[34px] top-0 flex h-6 w-6 items-center justify-center rounded-full text-[10px] ring-4 ring-white ${complete ? 'bg-emerald-500 text-white' : 'bg-slate-200 text-slate-500'}`}><i className={`fa-solid ${complete ? 'fa-check' : icon}`} aria-hidden="true"></i></span>
-                  <strong className="text-slate-900">{title}</strong><p className="mt-0.5 text-[11px] text-slate-500">{description}</p>
+                  <span className={`absolute -left-[34px] top-0 flex h-6 w-6 items-center justify-center rounded-full text-[10px] ring-4 ring-white ${complete ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-500'}`}><i className={`fa-solid ${complete ? 'fa-check' : icon}`} aria-hidden="true"></i></span>
+                  <strong className="text-gray-900">{title}</strong><p className="mt-0.5 text-[11px] text-gray-500">{description}</p>
                 </li>;
               })}
             </ol>
           </section>
           <section className="mt-6 grid gap-3 sm:grid-cols-2">
-            <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
-              <h3 className="text-xs font-bold text-slate-800"><i className="fa-solid fa-store mr-1.5 text-amber-600" aria-hidden="true"></i>Contact a seller</h3>
+            <div className="rounded-lg border border-gray-200 bg-gray-50 p-4">
+              <h3 className="text-xs font-semibold text-gray-800"><i className="fa-solid fa-store mr-1.5 text-gray-400" aria-hidden="true"></i>Contact a seller</h3>
               {activeOrder.products?.length ? (
                 <div className="mt-3 space-y-2">
                   {activeOrder.products.map((product) => (
-                    <div key={product.id} className="flex items-center justify-between gap-2 rounded-lg bg-white p-2.5">
+                    <div key={product.id} className="flex items-center justify-between gap-2 rounded-md bg-white p-2.5 border border-gray-200">
                       <div className="min-w-0">
-                        <p className="truncate text-[11px] font-semibold text-slate-800">{product.maker}</p>
-                        <p className="truncate text-[10px] text-slate-500">{product.name} · {product.province}</p>
+                        <p className="truncate text-[11px] font-semibold text-gray-800">{product.maker}</p>
+                        <p className="truncate text-[10px] text-gray-500">{product.name} · {product.province}</p>
                       </div>
-                      <button type="button" onClick={() => contactOrderSeller(product)} className="shrink-0 rounded-lg border border-slate-200 px-2.5 py-1.5 text-[10px] font-bold text-slate-700 hover:border-amber-400 hover:text-amber-800">Contact</button>
+                      <button type="button" onClick={() => contactOrderSeller(product)} className="shrink-0 rounded-md border border-gray-200 px-2.5 py-1.5 text-[10px] font-semibold text-gray-700 hover:border-gray-300 hover:text-gray-900">Contact</button>
                     </div>
                   ))}
                 </div>
               ) : (
-                <p className="mt-2 text-[10px] leading-relaxed text-slate-500">Seller contacts are available for orders placed in this demo. Look up an order to view its sellers.</p>
+                <p className="mt-2 text-[10px] leading-relaxed text-gray-500">Seller contacts are available for orders placed in this demo. Look up an order to view its sellers.</p>
               )}
             </div>
-            <div className="flex flex-col items-start rounded-xl border border-slate-200 bg-slate-50 p-4">
-              <h3 className="text-xs font-bold text-slate-800"><i className="fa-solid fa-headset mr-1.5 text-amber-600" aria-hidden="true"></i>Customer support</h3>
-              <p className="mt-2 flex-1 text-[10px] leading-relaxed text-slate-500">Need help with this order? Send a message to the E-Baligya support team.</p>
-              <button type="button" onClick={() => { setSupportReturnModal('tracking'); setModal('customer-support'); }} className="mt-3 rounded-lg bg-brand-navy px-3 py-2 text-[10px] font-bold text-white hover:bg-brand-navyLight">
+            <div className="flex flex-col items-start rounded-lg border border-gray-200 bg-gray-50 p-4">
+              <h3 className="text-xs font-semibold text-gray-800"><i className="fa-solid fa-headset mr-1.5 text-gray-400" aria-hidden="true"></i>Customer support</h3>
+              <p className="mt-2 flex-1 text-[10px] leading-relaxed text-gray-500">Need help with this order? Send a message to the E-Baligya support team.</p>
+              <button type="button" onClick={() => { setSupportReturnModal('tracking'); setModal('customer-support'); }} className="mt-3 rounded-md bg-blue-700 px-3 py-2 text-[10px] font-semibold text-white hover:bg-blue-800">
                 Contact support
               </button>
             </div>
@@ -1376,17 +1342,17 @@ function App() {
       {modal === 'review' && (
         <Modal title="Rate & review pasalubong" icon="fa-star" onClose={() => setModal('')} size="max-w-md">
           <form onSubmit={submitReview} className="space-y-5">
-            <p className="text-xs text-slate-500">Your feedback helps the local maker improve quality and freshness.</p>
+            <p className="text-xs text-gray-500">Your feedback helps the local maker improve quality and freshness.</p>
             {Object.entries({ taste: 'Taste', packaging: 'Packaging', freshness: 'Freshness' }).map(([metric, label]) => (
               <fieldset key={metric}>
-                <legend className="text-xs font-bold text-slate-700">{label} <span className="font-normal text-slate-400">· {ratings[metric]} / 5</span></legend>
+                <legend className="text-xs font-semibold text-gray-700">{label} <span className="font-normal text-gray-400">· {ratings[metric]} / 5</span></legend>
                 <div className="mt-1 flex gap-1">
-                  {[1, 2, 3, 4, 5].map((score) => <button key={score} type="button" onClick={() => setRatings((current) => ({ ...current, [metric]: score }))} aria-label={`${score} stars for ${label}`} className={`text-xl ${score <= ratings[metric] ? 'text-amber-400' : 'text-slate-300'}`}><i className={`fa-${score <= ratings[metric] ? 'solid' : 'regular'} fa-star`} aria-hidden="true"></i></button>)}
+                  {[1, 2, 3, 4, 5].map((score) => <button key={score} type="button" onClick={() => setRatings((current) => ({ ...current, [metric]: score }))} aria-label={`${score} stars for ${label}`} className={`text-xl ${score <= ratings[metric] ? 'text-amber-400' : 'text-gray-300'}`}><i className={`fa-${score <= ratings[metric] ? 'solid' : 'regular'} fa-star`} aria-hidden="true"></i></button>)}
                 </div>
               </fieldset>
             ))}
-            <label className="block text-xs font-semibold text-slate-700">Review (optional)<textarea rows="3" placeholder="Share your experience..." className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-xs font-normal focus:outline-none focus:ring-1 focus:ring-brand-gold"></textarea></label>
-            <button type="submit" className="w-full rounded-xl bg-emerald-600 px-4 py-3 text-xs font-bold text-white hover:bg-emerald-700">Submit review</button>
+            <label className="block text-xs font-semibold text-gray-700">Review (optional)<textarea rows="3" placeholder="Share your experience..." className="mt-1 w-full rounded-md border border-gray-200 px-3 py-2 text-xs font-normal focus:outline-none focus:ring-1 focus:ring-blue-100"></textarea></label>
+            <button type="submit" className="w-full rounded-md bg-blue-700 px-4 py-3 text-xs font-semibold text-white hover:bg-blue-800">Submit review</button>
           </form>
         </Modal>
       )}
@@ -1395,14 +1361,14 @@ function App() {
         <Modal title={authTab === 'forgot' ? 'Reset your password' : currentUser.isLoggedIn ? 'Customer profile' : 'Your account'} icon="fa-user" onClose={() => setModal('')} size="max-w-lg">
           {currentUser.isLoggedIn && authTab !== 'forgot' ? (
             <div className="space-y-4">
-              <div className="rounded-2xl border border-slate-200 bg-slate-50 p-3">
-                <div className="flex items-center gap-3 rounded-xl bg-white p-3 shadow-sm">
-                  <span className="flex h-11 w-11 items-center justify-center rounded-full bg-brand-navy text-xs font-black text-brand-gold">
+              <div className="rounded-lg border border-gray-200 bg-gray-50 p-3">
+                <div className="flex items-center gap-3 rounded-md bg-white border border-gray-200 p-3">
+                  <span className="flex h-11 w-11 items-center justify-center rounded-full bg-gray-900 text-xs font-semibold text-white">
                     {currentUser.name.split(' ').slice(0, 2).map((part) => part[0]).join('').slice(0, 2).toUpperCase()}
                   </span>
                   <div>
-                    <p className="text-sm font-bold text-slate-900">{currentUser.name}</p>
-                    <p className="text-[11px] text-slate-500">{currentUser.email}</p>
+                    <p className="text-sm font-semibold text-gray-900">{currentUser.name}</p>
+                    <p className="text-[11px] text-gray-500">{currentUser.email}</p>
                   </div>
                 </div>
               </div>
@@ -1410,165 +1376,165 @@ function App() {
               {!profileEdit ? (
                 <div className="space-y-4">
                   <div className="grid gap-3 sm:grid-cols-2">
-                    <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
-                      <p className="text-[10px] font-bold uppercase tracking-wide text-slate-500">Full name</p>
-                      <p className="mt-1 text-sm font-semibold text-slate-800">{currentUser.name}</p>
+                    <div className="rounded-md border border-gray-200 bg-gray-50 p-3">
+                      <p className="text-[10px] font-semibold uppercase tracking-wide text-gray-500">Full name</p>
+                      <p className="mt-1 text-sm font-semibold text-gray-800">{currentUser.name}</p>
                     </div>
-                    <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
-                      <p className="text-[10px] font-bold uppercase tracking-wide text-slate-500">Phone</p>
-                      <p className="mt-1 text-sm font-semibold text-slate-800">{currentUser.phone}</p>
+                    <div className="rounded-md border border-gray-200 bg-gray-50 p-3">
+                      <p className="text-[10px] font-semibold uppercase tracking-wide text-gray-500">Phone</p>
+                      <p className="mt-1 text-sm font-semibold text-gray-800">{currentUser.phone}</p>
                     </div>
-                    <div className="rounded-xl border border-slate-200 bg-slate-50 p-3 sm:col-span-2">
-                      <p className="text-[10px] font-bold uppercase tracking-wide text-slate-500">Email</p>
-                      <p className="mt-1 text-sm font-semibold text-slate-800">{currentUser.email}</p>
+                    <div className="rounded-md border border-gray-200 bg-gray-50 p-3 sm:col-span-2">
+                      <p className="text-[10px] font-semibold uppercase tracking-wide text-gray-500">Email</p>
+                      <p className="mt-1 text-sm font-semibold text-gray-800">{currentUser.email}</p>
                     </div>
-                    <section className="space-y-3 rounded-xl border border-slate-200 bg-slate-50 p-3 sm:col-span-2">
+                    <section className="space-y-3 rounded-md border border-gray-200 bg-gray-50 p-3 sm:col-span-2">
                       <div className="flex items-center justify-between gap-3">
                         <div>
-                          <h3 className="text-xs font-bold text-slate-800">Delivery addresses</h3>
-                          <p className="mt-0.5 text-[10px] text-slate-500">Manage saved destinations and choose a default for checkout.</p>
+                          <h3 className="text-xs font-semibold text-gray-800">Delivery addresses</h3>
+                          <p className="mt-0.5 text-[10px] text-gray-500">Manage saved destinations and choose a default for checkout.</p>
                         </div>
                         <button type="button" onClick={() => {
                           setAddressDraft({ label: '', name: currentUser.name, phone: currentUser.phone, email: currentUser.email, address: '', city: '', province: '', isDefault: savedAddresses.length === 0 });
                           setEditingAddressId(null);
                           setAddressBookError('');
                           setAddressFormOpen(true);
-                        }} className="shrink-0 rounded-lg bg-brand-navy px-3 py-2 text-[10px] font-bold text-white hover:bg-brand-navyLight">
+                        }} className="shrink-0 rounded-md bg-blue-700 px-3 py-2 text-[10px] font-semibold text-white hover:bg-blue-800">
                           <i className="fa-solid fa-plus mr-1" aria-hidden="true"></i>Add address
                         </button>
                       </div>
                       {savedAddresses.length ? savedAddresses.map((address) => (
-                        <article key={address.id} className="rounded-lg border border-slate-200 bg-white p-3">
+                        <article key={address.id} className="rounded-md border border-gray-200 bg-white p-3">
                           <div className="flex flex-wrap items-start justify-between gap-2">
                             <div>
                               <div className="flex flex-wrap items-center gap-2">
-                                <p className="text-xs font-bold text-slate-800">{address.label || 'Address'} · {address.name}</p>
-                                {address.isDefault && <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[9px] font-bold uppercase text-amber-800">Default</span>}
+                                <p className="text-xs font-semibold text-gray-800">{address.label || 'Address'} · {address.name}</p>
+                                {address.isDefault && <span className="rounded border border-gray-200 px-2 py-0.5 text-[9px] font-semibold uppercase text-gray-500">Default</span>}
                               </div>
-                              <p className="mt-1 text-[11px] text-slate-600">{address.phone}</p>
-                              <p className="mt-1 text-[11px] text-slate-600">{address.email || currentUser.email}</p>
-                              <p className="mt-1 text-[11px] text-slate-600">{address.address}, {address.city}, {address.province}</p>
+                              <p className="mt-1 text-[11px] text-gray-600">{address.phone}</p>
+                              <p className="mt-1 text-[11px] text-gray-600">{address.email || currentUser.email}</p>
+                              <p className="mt-1 text-[11px] text-gray-600">{address.address}, {address.city}, {address.province}</p>
                             </div>
                             <div className="flex flex-wrap gap-2">
-                              {!address.isDefault && <button type="button" onClick={() => setDefaultDeliveryAddress(address.id)} className="text-[10px] font-semibold text-amber-700 hover:text-amber-900">Set default</button>}
-                              <button type="button" onClick={() => startAddressEdit(address)} className="text-[10px] font-semibold text-slate-600 hover:text-slate-900">Edit</button>
+                              {!address.isDefault && <button type="button" onClick={() => setDefaultDeliveryAddress(address.id)} className="text-[10px] font-semibold text-blue-700 hover:text-blue-800">Set default</button>}
+                              <button type="button" onClick={() => startAddressEdit(address)} className="text-[10px] font-semibold text-gray-600 hover:text-gray-900">Edit</button>
                               <button type="button" onClick={() => removeDeliveryAddress(address.id)} className="text-[10px] font-semibold text-rose-600 hover:text-rose-800">Remove</button>
                             </div>
                           </div>
                         </article>
-                      )) : <p className="rounded-lg bg-white p-3 text-xs text-slate-500">No saved addresses yet. Add one to speed up checkout.</p>}
+                      )) : <p className="rounded-md bg-white border border-gray-200 p-3 text-xs text-gray-500">No saved addresses yet. Add one to speed up checkout.</p>}
 
                       {addressFormOpen && (
-                        <form onSubmit={saveAddressToBook} className="space-y-3 rounded-lg border border-amber-200 bg-white p-3">
-                          <h4 className="text-xs font-bold text-slate-800">{editingAddressId ? 'Edit address' : 'Add a new address'}</h4>
+                        <form onSubmit={saveAddressToBook} className="space-y-3 rounded-md border border-gray-200 bg-white p-3">
+                          <h4 className="text-xs font-semibold text-gray-800">{editingAddressId ? 'Edit address' : 'Add a new address'}</h4>
                           <div className="grid gap-3 sm:grid-cols-2">
-                            <label className="text-[10px] font-semibold text-slate-600">Address label
-                              <input required value={addressDraft.label} onChange={(event) => setAddressDraft((draft) => ({ ...draft, label: event.target.value }))} placeholder="Home, Work, Vacation..." className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-xs font-normal" />
+                            <label className="text-[10px] font-semibold text-gray-600">Address label
+                              <input required value={addressDraft.label} onChange={(event) => setAddressDraft((draft) => ({ ...draft, label: event.target.value }))} placeholder="Home, Work, Vacation..." className="mt-1 w-full rounded-md border border-gray-200 px-3 py-2 text-xs font-normal" />
                             </label>
-                            <label className="text-[10px] font-semibold text-slate-600">Recipient name
-                              <input required value={addressDraft.name} onChange={(event) => setAddressDraft((draft) => ({ ...draft, name: event.target.value }))} className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-xs font-normal" />
+                            <label className="text-[10px] font-semibold text-gray-600">Recipient name
+                              <input required value={addressDraft.name} onChange={(event) => setAddressDraft((draft) => ({ ...draft, name: event.target.value }))} className="mt-1 w-full rounded-md border border-gray-200 px-3 py-2 text-xs font-normal" />
                             </label>
-                            <label className="text-[10px] font-semibold text-slate-600">Phone number
-                              <input required type="tel" value={addressDraft.phone} onChange={(event) => setAddressDraft((draft) => ({ ...draft, phone: event.target.value }))} className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-xs font-normal" />
+                            <label className="text-[10px] font-semibold text-gray-600">Phone number
+                              <input required type="tel" value={addressDraft.phone} onChange={(event) => setAddressDraft((draft) => ({ ...draft, phone: event.target.value }))} className="mt-1 w-full rounded-md border border-gray-200 px-3 py-2 text-xs font-normal" />
                             </label>
-                            <label className="text-[10px] font-semibold text-slate-600 sm:col-span-2">Email address
+                            <label className="text-[10px] font-semibold text-gray-600 sm:col-span-2">Email address
                               <input required type="email" autoComplete="email" aria-invalid={Boolean(addressBookError && !isValidEmail(addressDraft.email))} value={addressDraft.email} onChange={(event) => {
                                 const email = event.target.value;
                                 setAddressBookError(email && !isValidEmail(email) ? 'Enter a valid email address for this delivery contact.' : '');
                                 setAddressDraft((draft) => ({ ...draft, email }));
-                              }} className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-xs font-normal" />
+                              }} className="mt-1 w-full rounded-md border border-gray-200 px-3 py-2 text-xs font-normal" />
                             </label>
-                            <label className="text-[10px] font-semibold text-slate-600 sm:col-span-2">Street / Barangay / Landmark
-                              <input required aria-invalid={Boolean(addressBookError)} value={addressDraft.address} onChange={(event) => { setAddressBookError(''); setAddressDraft((draft) => ({ ...draft, address: event.target.value })); }} className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-xs font-normal" />
+                            <label className="text-[10px] font-semibold text-gray-600 sm:col-span-2">Street / Barangay / Landmark
+                              <input required aria-invalid={Boolean(addressBookError)} value={addressDraft.address} onChange={(event) => { setAddressBookError(''); setAddressDraft((draft) => ({ ...draft, address: event.target.value })); }} className="mt-1 w-full rounded-md border border-gray-200 px-3 py-2 text-xs font-normal" />
                             </label>
-                            <label className="text-[10px] font-semibold text-slate-600">Province
+                            <label className="text-[10px] font-semibold text-gray-600">Province
                               <select required value={addressDraft.province} onChange={(event) => {
                                 setAddressBookError('');
                                 const province = event.target.value;
                                 setAddressDraft((draft) => ({ ...draft, province, city: (PH_PROVINCES[province] || [])[0] || '' }));
-                              }} className="mt-1 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-normal">
+                              }} className="mt-1 w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-xs font-normal">
                                 <option value="">Select province</option>
                                 {PROVINCE_OPTIONS.map((province) => <option key={province} value={province}>{province}</option>)}
                               </select>
                             </label>
-                            <label className="text-[10px] font-semibold text-slate-600">City / Municipality
-                              <select required value={addressDraft.city} onChange={(event) => { setAddressBookError(''); setAddressDraft((draft) => ({ ...draft, city: event.target.value })); }} className="mt-1 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-normal">
+                            <label className="text-[10px] font-semibold text-gray-600">City / Municipality
+                              <select required value={addressDraft.city} onChange={(event) => { setAddressBookError(''); setAddressDraft((draft) => ({ ...draft, city: event.target.value })); }} className="mt-1 w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-xs font-normal">
                                 <option value="">Select city / municipality</option>
                                 {(PH_PROVINCES[addressDraft.province] || []).map((city) => <option key={city} value={city}>{city}</option>)}
                               </select>
                             </label>
                           </div>
-                          <label className="flex items-center gap-2 text-[10px] font-medium text-slate-600">
-                            <input type="checkbox" checked={addressDraft.isDefault} onChange={(event) => setAddressDraft((draft) => ({ ...draft, isDefault: event.target.checked }))} className="accent-amber-500" />
+                          <label className="flex items-center gap-2 text-[10px] font-medium text-gray-600">
+                            <input type="checkbox" checked={addressDraft.isDefault} onChange={(event) => setAddressDraft((draft) => ({ ...draft, isDefault: event.target.checked }))} className="accent-blue-700" />
                             Set as my default address
                           </label>
                           {addressBookError && <p role="alert" className="text-xs font-medium text-red-600">{addressBookError}</p>}
                           <div className="flex gap-2">
-                            <button type="button" onClick={() => { setAddressFormOpen(false); setEditingAddressId(null); setAddressBookError(''); }} className="flex-1 rounded-lg border border-slate-300 px-3 py-2 text-[10px] font-bold text-slate-700">Cancel</button>
-                            <button type="submit" className="flex-1 rounded-lg bg-brand-navy px-3 py-2 text-[10px] font-bold text-white">{editingAddressId ? 'Save address' : 'Add address'}</button>
+                            <button type="button" onClick={() => { setAddressFormOpen(false); setEditingAddressId(null); setAddressBookError(''); }} className="flex-1 rounded-md border border-gray-200 px-3 py-2 text-[10px] font-semibold text-gray-700">Cancel</button>
+                            <button type="submit" className="flex-1 rounded-md bg-blue-700 px-3 py-2 text-[10px] font-semibold text-white hover:bg-blue-800">{editingAddressId ? 'Save address' : 'Add address'}</button>
                           </div>
                         </form>
                       )}
                     </section>
-                    <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
-                      <p className="text-[10px] font-bold uppercase tracking-wide text-slate-500">Preferred payment</p>
-                      <p className="mt-1 text-sm font-semibold text-slate-800">{currentUser.paymentMethod}</p>
+                    <div className="rounded-md border border-gray-200 bg-gray-50 p-3">
+                      <p className="text-[10px] font-semibold uppercase tracking-wide text-gray-500">Preferred payment</p>
+                      <p className="mt-1 text-sm font-semibold text-gray-800">{currentUser.paymentMethod}</p>
                     </div>
-                    <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
-                      <p className="text-[10px] font-bold uppercase tracking-wide text-slate-500">Delivery notes</p>
-                      <p className="mt-1 text-sm font-semibold text-slate-800">{currentUser.deliveryNotes || 'No notes added.'}</p>
+                    <div className="rounded-md border border-gray-200 bg-gray-50 p-3">
+                      <p className="text-[10px] font-semibold uppercase tracking-wide text-gray-500">Delivery notes</p>
+                      <p className="mt-1 text-sm font-semibold text-gray-800">{currentUser.deliveryNotes || 'No notes added.'}</p>
                     </div>
                   </div>
 
                   <div className="flex gap-3">
-                    <button type="button" onClick={() => setProfileEdit(true)} className="flex-1 rounded-xl bg-brand-navy px-4 py-3 text-xs font-bold text-white hover:bg-brand-navyLight">Edit profile</button>
-                    <button type="button" onClick={logoutUser} className="flex-1 rounded-xl border border-slate-300 px-4 py-3 text-xs font-bold text-slate-700 hover:bg-slate-50">Logout</button>
+                    <button type="button" onClick={() => setProfileEdit(true)} className="flex-1 rounded-md bg-blue-700 px-4 py-3 text-xs font-semibold text-white hover:bg-blue-800">Edit profile</button>
+                    <button type="button" onClick={logoutUser} className="flex-1 rounded-md border border-gray-200 px-4 py-3 text-xs font-semibold text-gray-700 hover:bg-gray-50">Logout</button>
                   </div>
                 </div>
               ) : (
                 <form onSubmit={saveProfile} className="space-y-4">
                   <div className="grid gap-3 sm:grid-cols-2">
-                    <label className="text-[11px] font-semibold text-slate-600">Full name
-                      <input value={profileDraft.name} onChange={(event) => setProfileDraft((draft) => ({ ...draft, name: event.target.value }))} className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-xs font-normal text-slate-800 focus:outline-none focus:ring-1 focus:ring-brand-gold" />
+                    <label className="text-[11px] font-semibold text-gray-600">Full name
+                      <input value={profileDraft.name} onChange={(event) => setProfileDraft((draft) => ({ ...draft, name: event.target.value }))} className="mt-1 w-full rounded-md border border-gray-200 px-3 py-2 text-xs font-normal text-gray-800 focus:outline-none focus:ring-1 focus:ring-blue-100" />
                     </label>
-                    <label className="text-[11px] font-semibold text-slate-600">Phone number
-                      <input value={profileDraft.phone} onChange={(event) => setProfileDraft((draft) => ({ ...draft, phone: event.target.value }))} className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-xs font-normal text-slate-800 focus:outline-none focus:ring-1 focus:ring-brand-gold" />
+                    <label className="text-[11px] font-semibold text-gray-600">Phone number
+                      <input value={profileDraft.phone} onChange={(event) => setProfileDraft((draft) => ({ ...draft, phone: event.target.value }))} className="mt-1 w-full rounded-md border border-gray-200 px-3 py-2 text-xs font-normal text-gray-800 focus:outline-none focus:ring-1 focus:ring-blue-100" />
                     </label>
-                    <label className="sm:col-span-2 text-[11px] font-semibold text-slate-600">Email address
-                      <input type="email" value={profileDraft.email} onChange={(event) => setProfileDraft((draft) => ({ ...draft, email: event.target.value }))} className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-xs font-normal text-slate-800 focus:outline-none focus:ring-1 focus:ring-brand-gold" />
+                    <label className="sm:col-span-2 text-[11px] font-semibold text-gray-600">Email address
+                      <input type="email" value={profileDraft.email} onChange={(event) => setProfileDraft((draft) => ({ ...draft, email: event.target.value }))} className="mt-1 w-full rounded-md border border-gray-200 px-3 py-2 text-xs font-normal text-gray-800 focus:outline-none focus:ring-1 focus:ring-blue-100" />
                     </label>
-                    <label className="text-[11px] font-semibold text-slate-600">Preferred payment method
-                      <select value={profileDraft.paymentMethod} onChange={(event) => setProfileDraft((draft) => ({ ...draft, paymentMethod: event.target.value }))} className="mt-1 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-normal text-slate-800 focus:outline-none focus:ring-1 focus:ring-brand-gold">
+                    <label className="text-[11px] font-semibold text-gray-600">Preferred payment method
+                      <select value={profileDraft.paymentMethod} onChange={(event) => setProfileDraft((draft) => ({ ...draft, paymentMethod: event.target.value }))} className="mt-1 w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-xs font-normal text-gray-800 focus:outline-none focus:ring-1 focus:ring-blue-100">
                         {['GCash', 'Maya', 'Card', 'COD'].map((method) => <option key={method} value={method}>{method}</option>)}
                       </select>
                     </label>
-                    <label className="text-[11px] font-semibold text-slate-600">Delivery notes
-                      <input value={profileDraft.deliveryNotes} onChange={(event) => setProfileDraft((draft) => ({ ...draft, deliveryNotes: event.target.value }))} className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-xs font-normal text-slate-800 focus:outline-none focus:ring-1 focus:ring-brand-gold" />
+                    <label className="text-[11px] font-semibold text-gray-600">Delivery notes
+                      <input value={profileDraft.deliveryNotes} onChange={(event) => setProfileDraft((draft) => ({ ...draft, deliveryNotes: event.target.value }))} className="mt-1 w-full rounded-md border border-gray-200 px-3 py-2 text-xs font-normal text-gray-800 focus:outline-none focus:ring-1 focus:ring-blue-100" />
                     </label>
                   </div>
 
                   <div className="flex gap-3">
-                    <button type="button" onClick={() => { setProfileEdit(false); setProfileDraft(currentUser); }} className="flex-1 rounded-xl border border-slate-300 px-4 py-3 text-xs font-bold text-slate-700 hover:bg-slate-50">Cancel</button>
-                    <button type="submit" className="flex-1 rounded-xl bg-brand-navy px-4 py-3 text-xs font-bold text-white hover:bg-brand-navyLight">Save changes</button>
+                    <button type="button" onClick={() => { setProfileEdit(false); setProfileDraft(currentUser); }} className="flex-1 rounded-md border border-gray-200 px-4 py-3 text-xs font-semibold text-gray-700 hover:bg-gray-50">Cancel</button>
+                    <button type="submit" className="flex-1 rounded-md bg-blue-700 px-4 py-3 text-xs font-semibold text-white hover:bg-blue-800">Save changes</button>
                   </div>
                 </form>
               )}
             </div>
           ) : authTab === 'forgot' ? (
             <form key="forgot-password" onSubmit={submitPasswordReset} className="space-y-3">
-              <p className="text-xs leading-relaxed text-slate-500">Enter the email address associated with your account to request a password reset.</p>
-              <label className="block text-xs font-semibold text-slate-600">Email address
-                <input required name="resetEmail" type="email" autoComplete="email" value={resetEmail} onChange={(event) => { setResetEmail(event.target.value); setResetMessage(''); }} placeholder="you@example.com" className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-xs font-normal focus:outline-none focus:ring-1 focus:ring-brand-gold" />
+              <p className="text-xs leading-relaxed text-gray-500">Enter the email address associated with your account to request a password reset.</p>
+              <label className="block text-xs font-semibold text-gray-600">Email address
+                <input required name="resetEmail" type="email" autoComplete="email" value={resetEmail} onChange={(event) => { setResetEmail(event.target.value); setResetMessage(''); }} placeholder="you@example.com" className="mt-1 w-full rounded-md border border-gray-200 px-3 py-2 text-xs font-normal focus:outline-none focus:ring-1 focus:ring-blue-100" />
               </label>
-              {resetMessage && <p role="status" className="rounded-lg border border-amber-200 bg-amber-50 p-3 text-xs text-amber-800">{resetMessage}</p>}
-              <button type="submit" className="w-full rounded-xl bg-brand-navy px-4 py-3 text-xs font-bold text-white hover:bg-brand-navyLight">Request password reset</button>
+              {resetMessage && <p role="status" className="rounded-md border border-blue-100 bg-blue-50 p-3 text-xs text-blue-800">{resetMessage}</p>}
+              <button type="submit" className="w-full rounded-md bg-blue-700 px-4 py-3 text-xs font-semibold text-white hover:bg-blue-800">Request password reset</button>
             </form>
           ) : (
             <div className="space-y-4">
-              <div className="rounded-2xl border border-slate-200 bg-slate-50 p-2.5">
-                <div className="flex rounded-xl border border-slate-200 bg-white p-1">
+              <div className="rounded-lg bg-gray-100 p-1">
+                <div className="flex rounded-md">
                   {['login', 'register'].map((tab) => (
-                    <button key={tab} type="button" onClick={() => setAuthTab(tab)} className={`flex-1 rounded-lg py-2 text-xs font-semibold capitalize ${authTab === tab ? 'bg-brand-navy text-white shadow-sm' : 'text-slate-500 hover:text-slate-800'}`}>
+                    <button key={tab} type="button" onClick={() => setAuthTab(tab)} className={`flex-1 rounded-md py-2 text-xs font-semibold capitalize ${authTab === tab ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-800'}`}>
                       {tab === 'login' ? 'Log in' : 'Create account'}
                     </button>
                   ))}
@@ -1578,30 +1544,30 @@ function App() {
               <form key={authTab} onSubmit={submitAuth} className="space-y-3">
                 {authTab === 'register' && (
                   <>
-                    <label className="block text-xs font-semibold text-slate-600">Full name
-                      <input required name="name" autoComplete="name" placeholder="Your full name" className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-xs font-normal focus:outline-none focus:ring-1 focus:ring-brand-gold" />
+                    <label className="block text-xs font-semibold text-gray-600">Full name
+                      <input required name="name" autoComplete="name" placeholder="Your full name" className="mt-1 w-full rounded-md border border-gray-200 px-3 py-2 text-xs font-normal focus:outline-none focus:ring-1 focus:ring-blue-100" />
                     </label>
-                    <label className="block text-xs font-semibold text-slate-600">Phone number
-                      <input required name="phone" type="tel" autoComplete="tel" placeholder="+63 917 123 4567" className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-xs font-normal focus:outline-none focus:ring-1 focus:ring-brand-gold" />
+                    <label className="block text-xs font-semibold text-gray-600">Phone number
+                      <input required name="phone" type="tel" autoComplete="tel" placeholder="+63 917 123 4567" className="mt-1 w-full rounded-md border border-gray-200 px-3 py-2 text-xs font-normal focus:outline-none focus:ring-1 focus:ring-blue-100" />
                     </label>
                   </>
                 )}
-                <label className="block text-xs font-semibold text-slate-600">Email address
-                  <input required name="email" type="email" autoComplete="email" defaultValue={authTab === 'login' ? currentUser.email || '' : ''} placeholder="you@example.com" className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-xs font-normal focus:outline-none focus:ring-1 focus:ring-brand-gold" />
+                <label className="block text-xs font-semibold text-gray-600">Email address
+                  <input required name="email" type="email" autoComplete="email" defaultValue={authTab === 'login' ? currentUser.email || '' : ''} placeholder="you@example.com" className="mt-1 w-full rounded-md border border-gray-200 px-3 py-2 text-xs font-normal focus:outline-none focus:ring-1 focus:ring-blue-100" />
                 </label>
-                <label className="block text-xs font-semibold text-slate-600">Password
-                  <input required name="password" type="password" autoComplete={authTab === 'login' ? 'current-password' : 'new-password'} minLength={8} placeholder={authTab === 'login' ? 'Enter your password' : 'At least 8 characters'} className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-xs font-normal focus:outline-none focus:ring-1 focus:ring-brand-gold" />
+                <label className="block text-xs font-semibold text-gray-600">Password
+                  <input required name="password" type="password" autoComplete={authTab === 'login' ? 'current-password' : 'new-password'} minLength={8} placeholder={authTab === 'login' ? 'Enter your password' : 'At least 8 characters'} className="mt-1 w-full rounded-md border border-gray-200 px-3 py-2 text-xs font-normal focus:outline-none focus:ring-1 focus:ring-blue-100" />
                 </label>
                 {authTab === 'login' ? (
                   <div className="text-right">
-                    <button type="button" onClick={() => { setAuthTab('forgot'); setResetEmail(''); setResetMessage(''); }} className="text-xs font-semibold text-amber-700 hover:text-amber-800">Forgot password?</button>
+                    <button type="button" onClick={() => { setAuthTab('forgot'); setResetEmail(''); setResetMessage(''); }} className="text-xs font-semibold text-blue-700 hover:text-blue-800">Forgot password?</button>
                   </div>
                 ) : (
-                  <label className="block text-xs font-semibold text-slate-600">Confirm password
-                    <input required name="confirmPassword" type="password" autoComplete="new-password" minLength={8} placeholder="Re-enter your password" className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-xs font-normal focus:outline-none focus:ring-1 focus:ring-brand-gold" />
+                  <label className="block text-xs font-semibold text-gray-600">Confirm password
+                    <input required name="confirmPassword" type="password" autoComplete="new-password" minLength={8} placeholder="Re-enter your password" className="mt-1 w-full rounded-md border border-gray-200 px-3 py-2 text-xs font-normal focus:outline-none focus:ring-1 focus:ring-blue-100" />
                   </label>
                 )}
-                <button type="submit" className="w-full rounded-xl bg-brand-navy px-4 py-3 text-xs font-bold text-white hover:bg-brand-navyLight">{authTab === 'login' ? 'Log in' : 'Create account'}</button>
+                <button type="submit" className="w-full rounded-md bg-blue-700 px-4 py-3 text-xs font-semibold text-white hover:bg-blue-800">{authTab === 'login' ? 'Log in' : 'Create account'}</button>
               </form>
             </div>
           )}
@@ -1610,7 +1576,7 @@ function App() {
 
       {modal === 'flowchart' && (
         <Modal title="System flowchart specification" icon="fa-diagram-project" onClose={() => setModal('')} size="max-w-2xl">
-          <p className="text-sm leading-relaxed text-slate-600">Orders are routed from regional MSME makers to customers with funds held in escrow until delivery is confirmed.</p>
+          <p className="text-sm leading-relaxed text-gray-600">Orders are routed from regional MSME makers to customers with funds held in escrow until delivery is confirmed.</p>
           <ol className="mt-5 space-y-3">
             {[
               ['Browse regional shelves', 'Filter by island group or region, search products, and compare prices and ratings.'],
@@ -1619,7 +1585,7 @@ function App() {
               ['Origin dispatch & package delivery', 'The maker prepares the order and routes it via ground courier or domestic air/sea delivery.'],
               ['Delivery outcome', 'Successful buyer confirmation releases escrow to the maker. Failed delivery keeps funds secure for a re-attempt.'],
               ['Review', 'After confirmed delivery, buyers can rate taste, packaging, and freshness.']
-            ].map(([title, text], index) => <li key={title} className="flex gap-3 rounded-xl border border-slate-200 p-3"><span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-brand-navy text-xs font-bold text-brand-gold">{index + 1}</span><div><h3 className="text-xs font-bold text-slate-900">{title}</h3><p className="mt-0.5 text-xs text-slate-500">{text}</p></div></li>)}
+            ].map(([title, text], index) => <li key={title} className="flex gap-3 rounded-md border border-gray-200 p-3"><span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-gray-900 text-xs font-semibold text-white">{index + 1}</span><div><h3 className="text-xs font-semibold text-gray-900">{title}</h3><p className="mt-0.5 text-xs text-gray-500">{text}</p></div></li>)}
           </ol>
         </Modal>
       )}
@@ -1638,7 +1604,7 @@ function App() {
             warning: 'fa-triangle-exclamation text-amber-500',
             error: 'fa-circle-xmark text-rose-500'
           };
-          return <div key={toast.id} className={`flex items-center gap-2.5 rounded-xl border bg-white px-4 py-3 text-xs text-slate-800 shadow-xl ${colors[toast.type]}`}>
+          return <div key={toast.id} className={`flex items-center gap-2.5 rounded-lg border bg-white px-4 py-3 text-xs text-gray-800 shadow-sm ${colors[toast.type]}`}>
             <i className={`fa-solid ${icons[toast.type]}`} aria-hidden="true"></i><span className="font-medium">{toast.message}</span>
           </div>;
         })}
