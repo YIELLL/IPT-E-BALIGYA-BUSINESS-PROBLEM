@@ -223,7 +223,7 @@ export const pasalubongItems = regionalPasalubong.flatMap((group) =>
   group.items.map(([name, fileName, price], index) => ({
     id: `${group.code}-${index + 1}`,
     name,
-    maker: 'Local pasalubong producer',
+    maker: '',
     region: group.region,
     island: group.island,
     province: group.province,
@@ -231,8 +231,8 @@ export const pasalubongItems = regionalPasalubong.flatMap((group) =>
     rating: 0,
     reviewCount: 0,
     stock: 20,
-    badge: 'Regional Pasalubong',
+    badge: '',
     image: getPhotoUrl(group.photoFolder, fileName),
-    description: `${name} is listed as a local pasalubong from ${group.province}.`
+    description: `${name} from ${group.province}.`
   }))
 );

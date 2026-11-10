@@ -452,11 +452,6 @@ function App() {
               })}
             </div>
           </div>
-          <div className="mt-8 grid max-w-3xl grid-cols-3 gap-3 text-center sm:mt-10 sm:gap-6">
-            <div className="rounded-xl border border-white/10 bg-white/5 p-3"><strong className="block text-xl text-amber-300">17</strong><span className="text-[10px] text-slate-300 sm:text-xs">Regions represented</span></div>
-            <div className="rounded-xl border border-white/10 bg-white/5 p-3"><strong className="block text-xl text-amber-300">{pasalubongItems.length}</strong><span className="text-[10px] text-slate-300 sm:text-xs">Pasalubong items</span></div>
-            <div className="rounded-xl border border-white/10 bg-white/5 p-3"><strong className="block text-xl text-amber-300">Secure</strong><span className="text-[10px] text-slate-300 sm:text-xs">Escrow-protected orders</span></div>
-          </div>
         </div>
       </section>
 
@@ -464,7 +459,6 @@ function App() {
         <div className="mb-6 flex flex-col justify-between gap-4 border-b border-slate-200 pb-6 sm:flex-row sm:items-center">
           <div>
             <div className="flex items-center gap-2">
-              <span className="h-6 w-2.5 rounded-full bg-brand-gold"></span>
               <h2 className="text-xl font-black tracking-tight text-brand-navy sm:text-2xl">{shelfTitle}</h2>
               <span className="rounded-full bg-slate-200 px-2 py-0.5 text-xs font-semibold text-slate-700">{filteredProducts.length} Items</span>
             </div>
@@ -492,25 +486,21 @@ function App() {
                   <span className="absolute left-3 top-3 rounded-full border border-amber-400/20 bg-brand-navy/90 px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wider text-amber-300">{product.region} · {product.island}</span>
                   <span className={`absolute right-3 top-3 rounded px-2 py-0.5 text-[10px] font-semibold text-white shadow ${product.stock <= 0 ? 'bg-red-600' : 'bg-emerald-600/95'}`}>{product.stock <= 0 ? 'Out of Stock' : 'Available'}</span>
                   <div className="absolute bottom-2 left-3 right-3 text-xs text-white">
-                    <span className="block truncate text-[11px] font-medium text-amber-200">{product.maker}</span>
                     <span className="flex items-center gap-1 truncate text-[10px] text-slate-300"><i className="fa-solid fa-location-dot text-amber-400" aria-hidden="true"></i>{product.province}</span>
                   </div>
                 </div>
                 <div className="flex flex-1 flex-col justify-between p-4">
                   <div>
-                    <div className="mb-1.5 flex items-center justify-between gap-2 text-xs">
-                      <span className="truncate rounded border border-amber-200 bg-amber-50 px-2 py-0.5 text-[10px] font-bold text-amber-800">{product.badge}</span>
-                      {product.reviewCount > 0 ? (
+                    {product.reviewCount > 0 && (
+                      <div className="mb-1.5 flex items-center justify-end text-xs">
                         <span className="flex shrink-0 items-center gap-1 font-bold text-amber-500"><i className="fa-solid fa-star" aria-hidden="true"></i>{product.rating.toFixed(1)}<span className="text-[10px] font-normal text-slate-400">({product.reviewCount})</span></span>
-                      ) : (
-                        <span className="shrink-0 text-[10px] font-semibold text-slate-400">New listing</span>
-                      )}
-                    </div>
+                      </div>
+                    )}
                     <h3 className="text-sm font-bold leading-snug text-slate-900 transition group-hover:text-amber-600">{product.name}</h3>
                     <p className="mt-1 line-clamp-2 text-xs leading-relaxed text-slate-500">{product.description}</p>
                   </div>
                   <div className="mt-4 flex items-center justify-between border-t border-slate-100 pt-3">
-                    <div><span className="block text-[10px] font-medium text-slate-400">Sample price</span><strong className="text-base font-black text-brand-navy">{formatPeso(product.price)}</strong></div>
+                    <div><strong className="text-base font-black text-brand-navy">{formatPeso(product.price)}</strong></div>
                     <button type="button" onClick={() => addToCart(product)} className={`flex items-center gap-1.5 rounded-xl px-3.5 py-2 text-xs font-bold transition ${product.stock <= 0 ? 'border border-red-200 bg-red-50 text-red-600 hover:bg-red-100' : 'bg-brand-navy text-white shadow-md hover:bg-brand-navyLight'}`}>
                       <i className={`fa-solid ${product.stock <= 0 ? 'fa-circle-exclamation' : 'fa-plus text-brand-gold'}`} aria-hidden="true"></i>
                       {product.stock <= 0 ? 'View Alternate' : 'Add to Cart'}
