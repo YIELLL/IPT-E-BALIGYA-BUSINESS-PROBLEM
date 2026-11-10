@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { delicacies } from './products.js';
+import { pasalubongItems } from './products.js';
 
 const REGION_GROUPS = [
   {
@@ -126,7 +126,7 @@ function App() {
 
   const filteredProducts = useMemo(() => {
     const normalizedQuery = query.trim().toLowerCase();
-    const filtered = delicacies.filter((product) => {
+    const filtered = pasalubongItems.filter((product) => {
       const matchesRegion = region === 'ALL' || product.region.toLowerCase() === region.toLowerCase();
       const matchesIsland = island === 'ALL' || product.island.toLowerCase() === island.toLowerCase();
       const searchableText = [product.name, product.maker, product.province, product.region, product.badge]
@@ -146,10 +146,10 @@ function App() {
   const shipping = cart.length === 0 ? 0 : cart.some((item) => item.island !== buyerIsland) ? 260 : 120;
   const total = subtotal + shipping;
   const shelfTitle = region !== 'ALL'
-    ? `${region} Delicacy Shelf`
+    ? `${region} Pasalubong`
     : island !== 'ALL'
-      ? `${island} Delicacy Collection`
-      : 'All Regional Delicacies';
+      ? `${island} Pasalubong`
+      : 'All Pasalubong';
   const shelfSubtitle = region !== 'ALL'
     ? `Authorized local specialty pasalubong sourced directly from registered ${region} MSMEs.`
     : island !== 'ALL'
@@ -308,17 +308,17 @@ function App() {
   const submitReview = (event) => {
     event.preventDefault();
     setModal('');
-    notify('Thank you! Delicacy quality review sent to the MSME producer.', 'success');
+    notify('Thank you! Pasalubong quality review sent to the MSME producer.', 'success');
   };
 
   const addAlternate = () => {
     if (!selectedProduct) return;
-    const alternate = delicacies.find((item) => item.id === selectedProduct.alternateId)
-      || delicacies.find((item) => item.island === selectedProduct.island && item.stock > 0);
+    const alternate = pasalubongItems.find((item) => item.id === selectedProduct.alternateId)
+      || pasalubongItems.find((item) => item.island === selectedProduct.island && item.stock > 0);
     if (alternate) {
       setModal('');
       addToCart(alternate);
-      notify(`Added recommended delicacy: ${alternate.name}`, 'success');
+      notify(`Added recommended pasalubong: ${alternate.name}`, 'success');
     }
   };
 
@@ -355,7 +355,7 @@ function App() {
                 <span className="font-serif text-2xl font-black tracking-tight text-brand-navy">E-Baligya</span>
                 <span className="rounded border border-amber-300 bg-brand-amberLight px-1.5 py-0.5 text-[10px] font-extrabold uppercase text-amber-900">PH Hub</span>
               </span>
-              <span className="hidden text-[11px] font-medium tracking-wide text-slate-500 sm:block">Philippine Regional Pasalubong &amp; Delicacy Logistics</span>
+              <span className="hidden text-[11px] font-medium tracking-wide text-slate-500 sm:block">Philippine Regional Pasalubong</span>
             </span>
           </button>
 
@@ -365,8 +365,8 @@ function App() {
               type="search"
               value={query}
               onChange={(event) => setQuery(event.target.value)}
-              placeholder="Search delicacies, makers, or regions..."
-              aria-label="Search delicacies"
+              placeholder="Search pasalubong, makers, or regions..."
+              aria-label="Search pasalubong"
               className="w-full rounded-xl border border-slate-200 bg-slate-100/90 py-2.5 pl-10 pr-10 text-sm transition focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-gold"
             />
             {query && (
@@ -427,7 +427,7 @@ function App() {
           </div>
         </div>
         <div className="px-4 pb-3 md:hidden">
-          <input type="search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search delicacies, makers, or regions..." aria-label="Search delicacies" className="w-full rounded-xl border border-slate-200 bg-slate-100 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-gold" />
+          <input type="search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search pasalubong, makers, or regions..." aria-label="Search pasalubong" className="w-full rounded-xl border border-slate-200 bg-slate-100 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-gold" />
         </div>
       </header>
 
@@ -438,7 +438,7 @@ function App() {
               <i className="fa-solid fa-sun" aria-hidden="true"></i> From our regions, to your home
             </span>
             <h1 className="mt-4 font-serif text-3xl font-bold leading-tight sm:text-5xl">Discover the flavors of the Philippines.</h1>
-            <p className="mt-3 max-w-2xl text-sm leading-relaxed text-slate-300 sm:text-base">Shop authentic regional delicacies, directly from local makers and small businesses across the archipelago.</p>
+            <p className="mt-3 max-w-2xl text-sm leading-relaxed text-slate-300 sm:text-base">Shop authentic regional pasalubong, directly from local makers and small businesses across the archipelago.</p>
             <div className="mt-6 flex flex-wrap items-center gap-2">
               <span className="mr-1 text-xs font-bold uppercase tracking-wider text-slate-400">Island group:</span>
               {ISLANDS.map((name) => {
@@ -454,7 +454,7 @@ function App() {
           </div>
           <div className="mt-8 grid max-w-3xl grid-cols-3 gap-3 text-center sm:mt-10 sm:gap-6">
             <div className="rounded-xl border border-white/10 bg-white/5 p-3"><strong className="block text-xl text-amber-300">17</strong><span className="text-[10px] text-slate-300 sm:text-xs">Regions represented</span></div>
-            <div className="rounded-xl border border-white/10 bg-white/5 p-3"><strong className="block text-xl text-amber-300">{delicacies.length}</strong><span className="text-[10px] text-slate-300 sm:text-xs">Regional specialties</span></div>
+            <div className="rounded-xl border border-white/10 bg-white/5 p-3"><strong className="block text-xl text-amber-300">{pasalubongItems.length}</strong><span className="text-[10px] text-slate-300 sm:text-xs">Pasalubong items</span></div>
             <div className="rounded-xl border border-white/10 bg-white/5 p-3"><strong className="block text-xl text-amber-300">Secure</strong><span className="text-[10px] text-slate-300 sm:text-xs">Escrow-protected orders</span></div>
           </div>
         </div>
@@ -523,7 +523,7 @@ function App() {
         ) : (
           <div className="my-8 rounded-2xl border border-slate-200 bg-white px-6 py-16 text-center shadow-sm">
             <span className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-amber-50 text-2xl text-amber-600"><i className="fa-solid fa-magnifying-glass-location" aria-hidden="true"></i></span>
-            <h3 className="text-lg font-bold text-slate-800">No regional delicacies found</h3>
+            <h3 className="text-lg font-bold text-slate-800">No pasalubong found</h3>
             <p className="mx-auto mt-1 max-w-sm text-sm text-slate-500">We couldn't find any products matching your active filters or search terms.</p>
             <button type="button" onClick={resetFilters} className="mt-4 rounded-xl bg-brand-navy px-4 py-2 text-xs font-bold text-white transition hover:bg-brand-navyLight">Reset &amp; view all regions</button>
           </div>
@@ -601,14 +601,14 @@ function App() {
       )}
 
       {modal === 'out-of-stock' && selectedProduct && (
-        <Modal title="Delicacy out of stock" icon="fa-boxes-stacked" onClose={() => setModal('')} size="max-w-md">
+        <Modal title="Pasalubong out of stock" icon="fa-boxes-stacked" onClose={() => setModal('')} size="max-w-md">
           <div className="text-center">
             <p className="text-sm font-semibold text-slate-800">{selectedProduct.name} is currently out of stock.</p>
             <p className="mt-1 text-xs text-slate-500">Our regional MSME maker is preparing the next fresh batch.</p>
           </div>
           {(() => {
-            const alternate = delicacies.find((item) => item.id === selectedProduct.alternateId)
-              || delicacies.find((item) => item.island === selectedProduct.island && item.stock > 0);
+            const alternate = pasalubongItems.find((item) => item.id === selectedProduct.alternateId)
+              || pasalubongItems.find((item) => item.island === selectedProduct.island && item.stock > 0);
             return alternate ? (
               <div className="mt-5 flex items-center gap-3 rounded-xl border border-amber-200 bg-amber-50 p-3">
                 <img src={alternate.image} alt="" className="h-14 w-14 rounded-lg object-cover" />

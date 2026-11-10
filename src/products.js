@@ -219,7 +219,7 @@ const getPhotoUrl = (photoFolder, fileName) => {
   return photoUrl;
 };
 
-export const delicacies = regionalPasalubong.flatMap((group) =>
+export const pasalubongItems = regionalPasalubong.flatMap((group) =>
   group.items.map(([name, fileName, price], index) => ({
     id: `${group.code}-${index + 1}`,
     name,
