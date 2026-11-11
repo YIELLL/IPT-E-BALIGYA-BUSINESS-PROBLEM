@@ -15,11 +15,23 @@ export default function AboutPage({ onBackToShop, onOpenFlowchart }) {
         </button>
       </div>
 
-      {/* Page Header */}
-      <header className="mb-10 max-w-3xl border-b border-gray-200 pb-8">
-        <span className="text-2xs font-semibold uppercase tracking-wider text-gray-400">Platform Overview</span>
-        <h1 className="mt-2 font-serif text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">About E-Baligya</h1>
-        <p className="mt-3 text-base leading-relaxed text-gray-600">
+      {/* Page Header — with Philippine sun watermark */}
+      <header className="relative mb-10 max-w-3xl overflow-hidden border-b border-gray-200 pb-8">
+        {/* Faint Philippine sun watermark, top-right corner */}
+        <svg aria-hidden="true" className="pointer-events-none absolute -right-4 -top-4 h-32 w-32 text-amber-100 opacity-70" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="40" cy="40" r="13" fill="currentColor"/>
+          {[0,45,90,135,180,225,270,315].map((deg, i) => {
+            const r = deg * Math.PI / 180;
+            const x1 = 40 + 17 * Math.cos(r);
+            const y1 = 40 + 17 * Math.sin(r);
+            const x2 = 40 + (i % 2 === 0 ? 34 : 28) * Math.cos(r);
+            const y2 = 40 + (i % 2 === 0 ? 34 : 28) * Math.sin(r);
+            return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke="currentColor" strokeWidth={i % 2 === 0 ? "3.5" : "2"} strokeLinecap="round"/>;
+          })}
+        </svg>
+        <span className="relative text-2xs font-semibold uppercase tracking-wider text-gray-400">Platform Overview</span>
+        <h1 className="relative mt-2 font-serif text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">About E-Baligya</h1>
+        <p className="relative mt-3 text-base leading-relaxed text-gray-600">
           A dedicated inter-island digital marketplace built to connect authentic regional Filipino MSMEs directly with buyers nationwide, eliminating predatory middlemen while securing transactions through automated milestone escrow.
         </p>
       </header>
@@ -32,25 +44,34 @@ export default function AboutPage({ onBackToShop, onOpenFlowchart }) {
         </div>
 
         <div className="grid gap-4 md:grid-cols-3">
-          <div className="rounded-lg border border-gray-200 bg-white p-5">
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-gray-500">Core Mission</h3>
-            <p className="mt-2 text-sm leading-relaxed text-gray-700">
-              E-Baligya empowers local micro, small, and medium enterprises (MSMEs) by providing direct national digital distribution for certified regional delicacies (pasalubong).
-            </p>
+          <div className="overflow-hidden rounded-lg border border-gray-200 bg-white">
+            <div className="h-[3px] bg-amber-100" />
+            <div className="p-5">
+              <h3 className="text-xs font-semibold uppercase tracking-wider text-gray-500">Core Mission</h3>
+              <p className="mt-2 text-sm leading-relaxed text-gray-700">
+                E-Baligya empowers local micro, small, and medium enterprises (MSMEs) by providing direct national digital distribution for certified regional delicacies (pasalubong).
+              </p>
+            </div>
           </div>
 
-          <div className="rounded-lg border border-gray-200 bg-white p-5">
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-gray-500">The Problem Solved</h3>
-            <p className="mt-2 text-sm leading-relaxed text-gray-700">
-              Regional delicacies are historically trapped behind fragmented local retail or compromised by multi-tiered wholesale distributors who inflate prices and erode freshness.
-            </p>
+          <div className="overflow-hidden rounded-lg border border-gray-200 bg-white">
+            <div className="h-[3px] bg-amber-100" />
+            <div className="p-5">
+              <h3 className="text-xs font-semibold uppercase tracking-wider text-gray-500">The Problem Solved</h3>
+              <p className="mt-2 text-sm leading-relaxed text-gray-700">
+                Regional delicacies are historically trapped behind fragmented local retail or compromised by multi-tiered wholesale distributors who inflate prices and erode freshness.
+              </p>
+            </div>
           </div>
 
-          <div className="rounded-lg border border-gray-200 bg-white p-5">
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-gray-500">Logistics & Trust</h3>
-            <p className="mt-2 text-sm leading-relaxed text-gray-700">
-              Through integrated domestic routing and buyer-confirmed escrow disbursements, both producers and customers participate in a transparent, accountable transaction lifecycle.
-            </p>
+          <div className="overflow-hidden rounded-lg border border-gray-200 bg-white">
+            <div className="h-[3px] bg-amber-100" />
+            <div className="p-5">
+              <h3 className="text-xs font-semibold uppercase tracking-wider text-gray-500">Logistics &amp; Trust</h3>
+              <p className="mt-2 text-sm leading-relaxed text-gray-700">
+                Through integrated domestic routing and buyer-confirmed escrow disbursements, both producers and customers participate in a transparent, accountable transaction lifecycle.
+              </p>
+            </div>
           </div>
         </div>
       </section>
