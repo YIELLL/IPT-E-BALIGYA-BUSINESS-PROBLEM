@@ -1,4 +1,5 @@
 import React from 'react';
+import PhilippineSun from './PhilippineSun';
 
 export default function AboutPage({ onBackToShop, onOpenFlowchart }) {
   return (
@@ -15,11 +16,13 @@ export default function AboutPage({ onBackToShop, onOpenFlowchart }) {
         </button>
       </div>
 
-      {/* Page Header */}
-      <header className="mb-10 max-w-3xl border-b border-gray-200 pb-8">
-        <span className="text-2xs font-semibold uppercase tracking-wider text-gray-400">Platform Overview</span>
-        <h1 className="mt-2 font-serif text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">About E-Baligya</h1>
-        <p className="mt-3 text-base leading-relaxed text-gray-600">
+      {/* Page Header — with Philippine sun watermark */}
+      <header className="relative mb-10 max-w-3xl overflow-hidden border-b border-gray-200 pb-8">
+        {/* Faint official Philippine sun watermark, top-right corner */}
+        <PhilippineSun className="pointer-events-none absolute -right-6 -top-6 h-36 w-36 opacity-25" />
+        <span className="relative text-2xs font-semibold uppercase tracking-wider text-gray-400">Platform Overview</span>
+        <h1 className="relative mt-2 font-serif text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">About E-Baligya</h1>
+        <p className="relative mt-3 text-base leading-relaxed text-gray-600">
           A dedicated inter-island digital marketplace built to connect authentic regional Filipino MSMEs directly with buyers nationwide, eliminating predatory middlemen while securing transactions through automated milestone escrow.
         </p>
       </header>
@@ -32,25 +35,34 @@ export default function AboutPage({ onBackToShop, onOpenFlowchart }) {
         </div>
 
         <div className="grid gap-4 md:grid-cols-3">
-          <div className="rounded-lg border border-gray-200 bg-white p-5">
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-gray-500">Core Mission</h3>
-            <p className="mt-2 text-sm leading-relaxed text-gray-700">
-              E-Baligya empowers local micro, small, and medium enterprises (MSMEs) by providing direct national digital distribution for certified regional delicacies (pasalubong).
-            </p>
+          <div className="overflow-hidden rounded-lg border border-gray-200 bg-white">
+            <div className="h-[3px] bg-amber-100" />
+            <div className="p-5">
+              <h3 className="text-xs font-semibold uppercase tracking-wider text-gray-500">Core Mission</h3>
+              <p className="mt-2 text-sm leading-relaxed text-gray-700">
+                E-Baligya empowers local micro, small, and medium enterprises (MSMEs) by providing direct national digital distribution for certified regional delicacies (pasalubong).
+              </p>
+            </div>
           </div>
 
-          <div className="rounded-lg border border-gray-200 bg-white p-5">
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-gray-500">The Problem Solved</h3>
-            <p className="mt-2 text-sm leading-relaxed text-gray-700">
-              Regional delicacies are historically trapped behind fragmented local retail or compromised by multi-tiered wholesale distributors who inflate prices and erode freshness.
-            </p>
+          <div className="overflow-hidden rounded-lg border border-gray-200 bg-white">
+            <div className="h-[3px] bg-amber-100" />
+            <div className="p-5">
+              <h3 className="text-xs font-semibold uppercase tracking-wider text-gray-500">The Problem Solved</h3>
+              <p className="mt-2 text-sm leading-relaxed text-gray-700">
+                Regional delicacies are historically trapped behind fragmented local retail or compromised by multi-tiered wholesale distributors who inflate prices and erode freshness.
+              </p>
+            </div>
           </div>
 
-          <div className="rounded-lg border border-gray-200 bg-white p-5">
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-gray-500">Logistics & Trust</h3>
-            <p className="mt-2 text-sm leading-relaxed text-gray-700">
-              Through integrated domestic routing and buyer-confirmed escrow disbursements, both producers and customers participate in a transparent, accountable transaction lifecycle.
-            </p>
+          <div className="overflow-hidden rounded-lg border border-gray-200 bg-white">
+            <div className="h-[3px] bg-amber-100" />
+            <div className="p-5">
+              <h3 className="text-xs font-semibold uppercase tracking-wider text-gray-500">Logistics &amp; Trust</h3>
+              <p className="mt-2 text-sm leading-relaxed text-gray-700">
+                Through integrated domestic routing and buyer-confirmed escrow disbursements, both producers and customers participate in a transparent, accountable transaction lifecycle.
+              </p>
+            </div>
           </div>
         </div>
       </section>

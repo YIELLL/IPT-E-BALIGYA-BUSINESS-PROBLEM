@@ -1,6 +1,8 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { delicacies } from './products.js';
 import AboutPage from './AboutPage';
+import PhilippineSun from './PhilippineSun';
+import BanigPattern from './BanigPattern';
 
 const REGION_GROUPS = [
   {
@@ -774,6 +776,7 @@ function App() {
       <header className="sticky top-0 z-40 border-b border-gray-200 bg-white">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
           <button type="button" onClick={resetFilters} className="flex shrink-0 items-center gap-2.5 text-left">
+            <PhilippineSun className="h-7 w-7 shrink-0" />
             <span>
               <span className="block font-serif text-xl font-bold tracking-tight text-gray-900">E-Baligya</span>
               <span className="hidden text-2xs font-medium text-gray-400 sm:block">Philippine Pasalubong Marketplace</span>
@@ -856,11 +859,13 @@ function App() {
 
       {view === 'shop' ? (
         <>
-          <section className="border-b border-gray-200 bg-white py-10 sm:py-14">
-            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <section className="relative overflow-hidden border-b border-gray-200 bg-white py-10 sm:py-14">
+            {/* Authentic Banig colored background with high-contrast transparent base */}
+            <BanigPattern opacity={0.06} />
+            <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
               <div className="max-w-2xl">
                 <h1 className="font-serif text-3xl font-bold leading-tight text-gray-900 sm:text-4xl">Philippine regional delicacies, delivered.</h1>
-                <p className="mt-3 text-sm leading-relaxed text-gray-500 sm:text-base">Authentic pasalubong from 17 regions, sourced directly from local MSMEs across the archipelago.</p>
+                <p className="mt-3 text-sm leading-relaxed text-gray-600 sm:text-base">Authentic pasalubong from 17 regions, sourced directly from local MSMEs across the archipelago.</p>
                 <div className="mt-5 flex flex-wrap items-center gap-2">
                   <span className="mr-1 text-xs font-semibold uppercase tracking-wider text-gray-400">Island group</span>
                   {ISLANDS.map((name) => {
@@ -906,6 +911,8 @@ function App() {
                   <img src={product.image} alt={product.name} loading="lazy" onError={(event) => { event.currentTarget.src = FALLBACK_IMAGE; }} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
                   <span className="absolute left-2 top-2 rounded bg-gray-900/75 px-2 py-0.5 text-2xs font-semibold uppercase tracking-wide text-white">{product.region} · {product.island}</span>
                 </div>
+                {/* Thin amber weave accent — a nod to banig / rattan crafts */}
+                <div className="h-[2px] bg-amber-100" />
                 <div className="flex flex-1 flex-col justify-between p-4">
                   <div>
                     <p className="mb-1 flex items-center gap-1 text-2xs text-gray-400">
@@ -963,7 +970,10 @@ function App() {
 
       <footer className="mt-8 border-t border-gray-200 bg-white">
         <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-5 text-xs text-gray-400 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
-          <span>© 2026 E-Baligya</span>
+          <div className="flex flex-col gap-0.5">
+            <span>© 2026 E-Baligya</span>
+            <span className="text-gray-300">Handcrafted for the archipelago</span>
+          </div>
           <div className="flex flex-wrap gap-4">
             <button type="button" onClick={() => { setView('about'); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className={`hover:text-gray-700 transition ${view === 'about' ? 'font-semibold text-gray-900' : ''}`}>About</button>
             <button type="button" onClick={() => { setSupportReturnModal(''); setModal('customer-support'); }} className="hover:text-gray-700">Contact support</button>
