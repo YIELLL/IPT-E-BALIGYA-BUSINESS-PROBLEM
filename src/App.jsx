@@ -1,6 +1,8 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { delicacies } from './products.js';
 import AboutPage from './AboutPage';
+import PhilippineSun from './PhilippineSun';
+import BanigPattern from './BanigPattern';
 
 const REGION_GROUPS = [
   {
@@ -773,19 +775,8 @@ function App() {
 
       <header className="sticky top-0 z-40 border-b border-gray-200 bg-white">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
-          <button type="button" onClick={resetFilters} className="flex shrink-0 items-center gap-2 text-left">
-            {/* Minimal Philippine sun — 8 rays, monochromatic */}
-            <svg width="26" height="26" viewBox="0 0 26 26" fill="none" aria-hidden="true" className="shrink-0 text-gray-900">
-              <circle cx="13" cy="13" r="4.5" fill="currentColor" opacity="0.85"/>
-              {[0,45,90,135,180,225,270,315].map((deg, i) => {
-                const r = deg * Math.PI / 180;
-                const x1 = 13 + 6.2 * Math.cos(r);
-                const y1 = 13 + 6.2 * Math.sin(r);
-                const x2 = 13 + 10.5 * Math.cos(r);
-                const y2 = 13 + 10.5 * Math.sin(r);
-                return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke="currentColor" strokeWidth={i % 2 === 0 ? "2" : "1.3"} strokeLinecap="round" opacity={i % 2 === 0 ? "0.9" : "0.6"}/>;
-              })}
-            </svg>
+          <button type="button" onClick={resetFilters} className="flex shrink-0 items-center gap-2.5 text-left">
+            <PhilippineSun className="h-7 w-7 shrink-0" />
             <span>
               <span className="block font-serif text-xl font-bold tracking-tight text-gray-900">E-Baligya</span>
               <span className="hidden text-2xs font-medium text-gray-400 sm:block">Philippine Pasalubong Marketplace</span>
@@ -868,17 +859,9 @@ function App() {
 
       {view === 'shop' ? (
         <>
-          <section className="relative overflow-hidden border-b border-gray-200 bg-white py-10 sm:py-14">
-            {/* Banig (woven mat) geometric background — very subtle */}
-            <svg aria-hidden="true" className="pointer-events-none absolute inset-0 h-full w-full opacity-[0.035]" xmlns="http://www.w3.org/2000/svg">
-              <defs>
-                <pattern id="banig" x="0" y="0" width="16" height="16" patternUnits="userSpaceOnUse">
-                  <path d="M0 8 L8 0 L16 8 L8 16 Z" fill="none" stroke="#374151" strokeWidth="0.75"/>
-                  <path d="M4 4 L12 4 L12 12 L4 12 Z" fill="none" stroke="#374151" strokeWidth="0.4"/>
-                </pattern>
-              </defs>
-              <rect width="100%" height="100%" fill="url(#banig)"/>
-            </svg>
+          <section className="relative overflow-hidden border-b border-gray-200 bg-[#faf8f5] py-10 sm:py-14">
+            {/* Authentic Banig (Philippine woven mat) colored background */}
+            <BanigPattern opacity={0.18} />
             <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
               <div className="max-w-2xl">
                 <h1 className="font-serif text-3xl font-bold leading-tight text-gray-900 sm:text-4xl">Philippine regional delicacies, delivered.</h1>

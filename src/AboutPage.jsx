@@ -1,4 +1,5 @@
 import React from 'react';
+import PhilippineSun from './PhilippineSun';
 
 export default function AboutPage({ onBackToShop, onOpenFlowchart }) {
   return (
@@ -17,18 +18,8 @@ export default function AboutPage({ onBackToShop, onOpenFlowchart }) {
 
       {/* Page Header — with Philippine sun watermark */}
       <header className="relative mb-10 max-w-3xl overflow-hidden border-b border-gray-200 pb-8">
-        {/* Faint Philippine sun watermark, top-right corner */}
-        <svg aria-hidden="true" className="pointer-events-none absolute -right-4 -top-4 h-32 w-32 text-amber-100 opacity-70" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="40" cy="40" r="13" fill="currentColor"/>
-          {[0,45,90,135,180,225,270,315].map((deg, i) => {
-            const r = deg * Math.PI / 180;
-            const x1 = 40 + 17 * Math.cos(r);
-            const y1 = 40 + 17 * Math.sin(r);
-            const x2 = 40 + (i % 2 === 0 ? 34 : 28) * Math.cos(r);
-            const y2 = 40 + (i % 2 === 0 ? 34 : 28) * Math.sin(r);
-            return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke="currentColor" strokeWidth={i % 2 === 0 ? "3.5" : "2"} strokeLinecap="round"/>;
-          })}
-        </svg>
+        {/* Faint official Philippine sun watermark, top-right corner */}
+        <PhilippineSun className="pointer-events-none absolute -right-6 -top-6 h-36 w-36 opacity-25" />
         <span className="relative text-2xs font-semibold uppercase tracking-wider text-gray-400">Platform Overview</span>
         <h1 className="relative mt-2 font-serif text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">About E-Baligya</h1>
         <p className="relative mt-3 text-base leading-relaxed text-gray-600">
