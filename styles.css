@@ -1,0 +1,13 @@
+/* Scrollbars */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: #f9fafb; }
+::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 9999px; }
+::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
+
+/* Tabular numbers */
+.tabular { font-variant-numeric: tabular-nums; }
+
+/* Ensure all price/count elements use tabular nums */
+[data-tabular], .price, .count {
+  font-variant-numeric: tabular-nums;
+}
