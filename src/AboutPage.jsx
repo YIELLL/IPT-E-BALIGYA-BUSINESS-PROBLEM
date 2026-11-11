@@ -3,7 +3,9 @@ import PhilippineSun from './PhilippineSun';
 
 export default function AboutPage({ onBackToShop, onOpenFlowchart }) {
   return (
-    <div className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+    <div className="relative w-full overflow-hidden">
+      <PhilippineSun className="pointer-events-none absolute -right-12 -top-12 h-24 w-24 opacity-25 sm:h-36 sm:w-36" />
+      <div className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       {/* Navigation breadcrumb */}
       <div className="mb-6">
         <button
@@ -16,10 +18,7 @@ export default function AboutPage({ onBackToShop, onOpenFlowchart }) {
         </button>
       </div>
 
-      {/* Page Header — with Philippine sun watermark */}
-      <header className="relative mb-10 max-w-3xl overflow-hidden border-b border-gray-200 pb-8">
-        {/* Faint official Philippine sun watermark, top-right corner */}
-        <PhilippineSun className="pointer-events-none absolute -right-6 -top-6 h-36 w-36 opacity-25" />
+      <header className="relative mb-10 max-w-3xl border-b border-gray-200 pb-8">
         <span className="relative text-2xs font-semibold uppercase tracking-wider text-gray-400">Platform Overview</span>
         <h1 className="relative mt-2 font-serif text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">About E-Baligya</h1>
         <p className="relative mt-3 text-base leading-relaxed text-gray-600">
@@ -198,7 +197,7 @@ export default function AboutPage({ onBackToShop, onOpenFlowchart }) {
           </button>
         </div>
       </section>
+      </div>
     </div>
   );
 }
-
