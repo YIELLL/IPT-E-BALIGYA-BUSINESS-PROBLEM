@@ -65,3 +65,4 @@ export default function PhilippineSun({ className = "h-7 w-7", fill = "#fcd116",
     </svg>
   );
 }
+

@@ -859,13 +859,13 @@ function App() {
 
       {view === 'shop' ? (
         <>
-          <section className="relative overflow-hidden border-b border-gray-200 bg-[#faf8f5] py-10 sm:py-14">
-            {/* Authentic Banig (Philippine woven mat) colored background */}
-            <BanigPattern opacity={0.18} />
+          <section className="relative overflow-hidden border-b border-gray-200 bg-white py-10 sm:py-14">
+            {/* Authentic Banig colored background with high-contrast transparent base */}
+            <BanigPattern opacity={0.06} />
             <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
               <div className="max-w-2xl">
                 <h1 className="font-serif text-3xl font-bold leading-tight text-gray-900 sm:text-4xl">Philippine regional delicacies, delivered.</h1>
-                <p className="mt-3 text-sm leading-relaxed text-gray-500 sm:text-base">Authentic pasalubong from 17 regions, sourced directly from local MSMEs across the archipelago.</p>
+                <p className="mt-3 text-sm leading-relaxed text-gray-600 sm:text-base">Authentic pasalubong from 17 regions, sourced directly from local MSMEs across the archipelago.</p>
                 <div className="mt-5 flex flex-wrap items-center gap-2">
                   <span className="mr-1 text-xs font-semibold uppercase tracking-wider text-gray-400">Island group</span>
                   {ISLANDS.map((name) => {
