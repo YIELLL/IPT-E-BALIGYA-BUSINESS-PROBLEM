@@ -2,7 +2,6 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { delicacies } from './products.js';
 import AboutPage from './AboutPage';
 import PhilippineSun from './PhilippineSun';
-import BanigPattern from './BanigPattern';
 
 const REGION_GROUPS = [
   {
@@ -860,8 +859,16 @@ function App() {
       {view === 'shop' ? (
         <>
           <section className="relative overflow-hidden border-b border-gray-200 bg-white py-10 sm:py-14">
-            {/* Authentic Banig colored background with high-contrast transparent base */}
-            <BanigPattern opacity={0.06} />
+            {/* Banig (woven mat) geometric background — very subtle */}
+            <svg aria-hidden="true" className="pointer-events-none absolute inset-0 h-full w-full opacity-[0.035]" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <pattern id="banig" x="0" y="0" width="16" height="16" patternUnits="userSpaceOnUse">
+                  <path d="M0 8 L8 0 L16 8 L8 16 Z" fill="none" stroke="#374151" strokeWidth="0.75"/>
+                  <path d="M4 4 L12 4 L12 12 L4 12 Z" fill="none" stroke="#374151" strokeWidth="0.4"/>
+                </pattern>
+              </defs>
+              <rect width="100%" height="100%" fill="url(#banig)"/>
+            </svg>
             <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
               <div className="max-w-2xl">
                 <h1 className="font-serif text-3xl font-bold leading-tight text-gray-900 sm:text-4xl">Philippine regional delicacies, delivered.</h1>
